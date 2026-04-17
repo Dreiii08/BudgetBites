@@ -97,36 +97,35 @@ function updateSideSelectionUI() {
 }
 
 // ---------------------
-// SIDE DISH (One per main quantity)
+// SIDE DISH (One per main quantity - ADD ONLY, NO TOGGLE)
 // ---------------------
 function addSide(name, price, el) {
     let totalMainQty = getTotalMainQty();
     
     if (totalMainQty === 0) {
-        alert("📢 Please select a main dish first!");
+        alert("📢 Pumili ka muna ng main dish!");
         return;
     }
     
-    // Check if we already have selected this side
+    // Check if this side is already selected
     let existingIndex = selectedSides.findIndex(s => s.name === name);
     
+    // If already selected, show message and don't add again
     if (existingIndex !== -1) {
-        // Remove if already selected
-        selectedSides.splice(existingIndex, 1);
-        el.classList.remove("selected");
-    } else {
-        // Add if we haven't reached the limit
-        if (selectedSides.length < totalMainQty) {
-            selectedSides.push({ name, price });
-            el.classList.add("selected");
-        } else {
-            alert(`⚠️ You can only choose ${totalMainQty} side dish(es) (one per main dish). Remove a side first or reduce main dish quantity.`);
-            return;
-        }
+        alert(`⚠️ "${name}" is already in your sides! You can only select each side once.`);
+        return;
     }
     
-    updateSideHint();
-    updateCart();
+    // Check if we can add more sides
+    if (selectedSides.length < totalMainQty) {
+        selectedSides.push({ name, price });
+        el.classList.add("selected");
+        animateCart(); // Add cart animation
+        updateSideHint();
+        updateCart();
+    } else {
+        alert(`⚠️ You already selected ${selectedSides.length} side dish(es). You can only have ${totalMainQty} side(s) total (one per main dish).`);
+    }
 }
 
 // ---------------------
