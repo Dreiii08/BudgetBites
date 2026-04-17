@@ -1,5 +1,6 @@
 // =====================
-// BUDGET BITES - WORKING SIDE DISH VERSION
+// BUDGET BITES - COMPLETE VERSION
+// with Duplicate Sides Allowed, Badge Counter, Full Cart System
 // =====================
 
 let mains = {};
@@ -7,11 +8,11 @@ let selectedSides = [];
 let extras = [];
 
 // ---------------------
-// MAIN DISH (QUANTITY)
+// MAIN DISH FUNCTIONS
 // ---------------------
 function changeMainQty(name, price, el, change) {
     if (!mains[name]) {
-        mains[name] = { name, price, qty: 0 };
+        mains[name] = { name: name, price: price, qty: 0 };
     }
 
     let newQty = mains[name].qty + change;
@@ -20,15 +21,16 @@ function changeMainQty(name, price, el, change) {
     let oldQty = mains[name].qty;
     mains[name].qty = newQty;
 
+    // Update display
     let qtyEl = document.getElementById("qty-" + name);
     if (qtyEl) qtyEl.innerText = mains[name].qty;
 
     let totalMainQty = getTotalMainQty();
-    let hasMain = totalMainQty > 0;
-
     let sidesSection = document.getElementById("sides");
+    
+    // Show/hide sides section
     if (sidesSection) {
-        if (hasMain) {
+        if (totalMainQty > 0) {
             sidesSection.classList.remove("hidden");
         } else {
             sidesSection.classList.add("hidden");
@@ -37,13 +39,22 @@ function changeMainQty(name, price, el, change) {
     
     updateSideHint();
     
-    // Adjust sides if quantity decreased
+    // Remove extra sides if main quantity decreased
     if (newQty < oldQty) {
-        trimSidesToMatch(totalMainQty);
+        while (selectedSides.length > totalMainQty) {
+            let removed = selectedSides.pop();
+            updateSideHighlight(removed.name);
+        }
     }
     
+    // Clear all sides if no main dishes
     if (totalMainQty === 0) {
-        clearAllSides();
+        selectedSides = [];
+        document.querySelectorAll(".side").forEach(card => {
+            card.classList.remove("selected");
+            let badge = card.querySelector('.selected-count');
+            if (badge) badge.style.display = 'none';
+        });
     }
 
     updateCart();
@@ -57,106 +68,94 @@ function getTotalMainQty() {
     return total;
 }
 
+// ---------------------
+// SIDE DISH FUNCTIONS
+// ---------------------
 function updateSideHint() {
     let totalMain = getTotalMainQty();
     let sideHint = document.getElementById("sideHint");
     let currentSideCount = selectedSides.length;
     
-    if (sideHint) {
-        if (totalMain > 0) {
-            if (currentSideCount < totalMain) {
-                let remaining = totalMain - currentSideCount;
-                sideHint.innerHTML = `✨ Pwede ka pang pumili ng ${remaining} na side dish (${currentSideCount}/${totalMain} napili)`;
-                sideHint.style.color = "#c9a46c";
-            } else if (currentSideCount === totalMain) {
-                sideHint.innerHTML = `✅ Napili mo na lahat ng ${totalMain} side dish! Pwede mong palitan ang isang side sa pamamagitan ng pag-click sa iba.`;
-                sideHint.style.color = "#4caf50";
-            }
+    if (sideHint && totalMain > 0) {
+        if (currentSideCount < totalMain) {
+            let remaining = totalMain - currentSideCount;
+            sideHint.innerHTML = `✨ Pwede ka pang pumili ng ${remaining} side dish (${currentSideCount}/${totalMain} napili)`;
+            sideHint.style.color = "#c9a46c";
         } else {
-            sideHint.innerHTML = "";
+            sideHint.innerHTML = `✅ Complete na! ${currentSideCount}/${totalMain} sides. Pwede mong i-remove ang isang side para magpalit.`;
+            sideHint.style.color = "#4caf50";
+        }
+        sideHint.style.fontSize = "13px";
+        sideHint.style.marginBottom = "15px";
+        sideHint.style.padding = "8px 15px";
+        sideHint.style.background = "#fff3e0";
+        sideHint.style.borderRadius = "20px";
+        sideHint.style.display = "inline-block";
+    } else if (sideHint) {
+        sideHint.innerHTML = "";
+    }
+}
+
+function updateSideHighlight(name) {
+    let count = selectedSides.filter(s => s.name === name).length;
+    let card = document.querySelector(`.side[data-name="${name}"]`);
+    
+    if (card) {
+        if (count > 0) {
+            card.classList.add("selected");
+            let badge = card.querySelector('.selected-count');
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'selected-count';
+                badge.style.cssText = 'position:absolute; top:-8px; right:-8px; background:#c9a46c; color:#2b1a0e; border-radius:50%; width:24px; height:24px; font-size:12px; font-weight:bold; display:flex; align-items:center; justify-content:center; border:2px solid white;';
+                card.style.position = 'relative';
+                card.appendChild(badge);
+            }
+            badge.textContent = count;
+            badge.style.display = 'flex';
+        } else {
+            card.classList.remove("selected");
+            let badge = card.querySelector('.selected-count');
+            if (badge) badge.style.display = 'none';
         }
     }
 }
 
-function trimSidesToMatch(maxCount) {
-    while (selectedSides.length > maxCount) {
-        let removed = selectedSides.pop();
-        let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
-        if (removedCard) removedCard.classList.remove("selected");
-    }
-    updateSideHint();
-}
-
-function clearAllSides() {
-    selectedSides.forEach(side => {
-        let card = document.querySelector(`.side[data-name="${side.name}"]`);
-        if (card) card.classList.remove("selected");
-    });
-    selectedSides = [];
-    updateSideHint();
-}
-
-// ---------------------
-// SIDE DISH - FIXED: Hindi na nagto-toggle, nag-a-add lang hanggang limit
-// ---------------------
 function selectSide(name, price, element) {
     let totalMainQty = getTotalMainQty();
     
-    // Check kung may main dish
     if (totalMainQty === 0) {
-        alert("📢 Pumili ka muna ng main dish bago pumili ng side!");
+        alert("📢 Pumili ka muna ng main dish!");
         return;
     }
     
-    // Check kung ang side ay napili na ba
-    let existingIndex = selectedSides.findIndex(s => s.name === name);
-    
-    // KUNG NAPILI NA - huwag mag-add, ipakita na napili na
-    if (existingIndex !== -1) {
-        alert(`⚠️ "${name}" ay napili mo na! Pwede kang pumili ng ibang side dish.`);
+    // Check if reached the limit
+    if (selectedSides.length >= totalMainQty) {
+        alert(`⚠️ Puno na! ${totalMainQty} main dish = ${totalMainQty} side dish lang. I-remove mo muna ang isang side bago mag-add ng bago.`);
         return;
     }
     
-    // KUNG HINDI PA NAPILI - check kung may available na slot
-    if (selectedSides.length < totalMainQty) {
-        // MAG-ADD NG SIDE
-        selectedSides.push({ name, price });
-        element.classList.add("selected");
-        updateSideHint();
-        updateCart();
-        
-        // Animation
-        element.style.transform = "scale(0.95)";
-        setTimeout(() => {
-            element.style.transform = "scale(1)";
-        }, 150);
-        
-        animateCart();
-    } else {
-        // WALA NG SLOT - tanungin kung gusto palitan
-        let replaceChoice = confirm(`⚠️ ${totalMainQty} main dish(es) = ${totalMainQty} side(s) lang! Gusto mo bang palitan ang huli mong napiling side ng "${name}"?`);
-        
-        if (replaceChoice) {
-            // ALISIN ANG HULING SIDE
-            let removed = selectedSides.pop();
-            let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
-            if (removedCard) removedCard.classList.remove("selected");
-            
-            // IDAGDAG ANG BAGONG SIDE
-            selectedSides.push({ name, price });
-            element.classList.add("selected");
-            updateSideHint();
-            updateCart();
-            animateCart();
-        }
-    }
+    // Add side (duplicate allowed!)
+    selectedSides.push({ name: name, price: price });
+    updateSideHighlight(name);
+    updateSideHint();
+    updateCart();
+    
+    // Visual feedback
+    element.style.transform = "scale(0.95)";
+    setTimeout(() => {
+        element.style.transform = "scale(1)";
+    }, 150);
+    
+    // Cart animation
+    animateCart();
 }
 
 // ---------------------
-// EXTRAS
+// EXTRA FUNCTIONS
 // ---------------------
 function addExtraItem(name, price, element) {
-    extras.push({ name, price });
+    extras.push({ name: name, price: price });
     updateCart();
     animateCart();
     
@@ -168,7 +167,7 @@ function addExtraItem(name, price, element) {
 }
 
 // ---------------------
-// UPDATE CART DISPLAY
+// CART FUNCTIONS
 // ---------------------
 function updateCart() {
     let list = document.getElementById("order-list");
@@ -178,58 +177,85 @@ function updateCart() {
     let total = 0;
     let count = 0;
 
-    // Main dishes
+    // Display Main Dishes
     for (let k in mains) {
         let m = mains[k];
         if (m.qty > 0) {
             let sub = m.qty * m.price;
             total += sub;
             count += m.qty;
-
             list.innerHTML += `
-                <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff3e0; border-radius: 10px; margin-bottom: 8px;">
-                    <span>🍱 ${m.name.replace('_', ' ')} x${m.qty}</span>
-                    <span>₱${sub}</span>
-                    <button onclick="removeMain('${m.name}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
+                <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fff3e0; margin-bottom: 8px; border-radius: 10px; border-left: 4px solid #c9a46c;">
+                    <div style="flex: 1;">
+                        <strong>🍱 ${m.name.replace('_', ' ')}</strong>
+                        <span style="margin-left: 10px; color: #888;">x${m.qty}</span>
+                    </div>
+                    <div style="margin: 0 15px; font-weight: bold; color: #2b1a0e;">₱${sub}</div>
+                    <button onclick="removeMain('${m.name}')" style="background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 14px;">✕</button>
                 </li>
             `;
         }
     }
 
-    // Side dishes
-    selectedSides.forEach((side, idx) => {
-        total += side.price;
-        count++;
-        list.innerHTML += `
-            <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f5f5f5; border-radius: 10px; margin-bottom: 8px;">
-                <span>🍟 ${side.name} #${idx + 1}</span>
-                <span>₱${side.price}</span>
-                <button onclick="removeSideItem(${idx})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
-            </li>
-        `;
-    });
+    // Display Side Dishes (with individual numbers)
+    if (selectedSides.length > 0) {
+        selectedSides.forEach((side, idx) => {
+            total += side.price;
+            count++;
+            list.innerHTML += `
+                <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f5f5f5; margin-bottom: 8px; border-radius: 10px; border-left: 4px solid #c9a46c;">
+                    <div style="flex: 1;">
+                        <strong>🍟 ${side.name}</strong>
+                        <span style="margin-left: 10px; color: #888; font-size: 12px;">Side #${idx + 1}</span>
+                    </div>
+                    <div style="margin: 0 15px; font-weight: bold; color: #2b1a0e;">₱${side.price}</div>
+                    <button onclick="removeSideItem(${idx})" style="background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 14px;">✕</button>
+                </li>
+            `;
+        });
+    }
 
-    // Extras
+    // Display Extras
     extras.forEach((e, i) => {
         total += e.price;
         count++;
         list.innerHTML += `
-            <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fafafa; border-radius: 10px; margin-bottom: 8px;">
-                <span>✨ ${e.name}</span>
-                <span>₱${e.price}</span>
-                <button onclick="removeExtra(${i})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
+            <li style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fafafa; margin-bottom: 8px; border-radius: 10px; border-left: 4px solid #c9a46c;">
+                <div style="flex: 1;">
+                    <strong>✨ ${e.name}</strong>
+                </div>
+                <div style="margin: 0 15px; font-weight: bold; color: #2b1a0e;">₱${e.price}</div>
+                <button onclick="removeExtra(${i})" style="background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 14px;">✕</button>
             </li>
         `;
     });
     
+    // Empty cart message
     if (list.innerHTML === "") {
-        list.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa;">🛒 Walang laman ang cart</div>';
+        list.innerHTML = `
+            <div style="text-align: center; padding: 50px 20px; color: #aaa;">
+                🛒 Walang laman ang cart<br>
+                <span style="font-size: 12px;">Mag-add ng main dish para makapili ng sides</span>
+            </div>
+        `;
     }
 
+    // Update counters
     let cartCount = document.getElementById("cart-count");
     let totalSpan = document.getElementById("total");
     if (cartCount) cartCount.innerText = count;
     if (totalSpan) totalSpan.innerText = total;
+}
+
+function animateCart() {
+    let cartIcon = document.querySelector('.cart-icon');
+    if (cartIcon) {
+        cartIcon.style.transform = "scale(1.1)";
+        cartIcon.style.transition = "transform 0.2s";
+        setTimeout(() => {
+            cartIcon.style.transform = "scale(1)";
+        }, 200);
+    }
 }
 
 // ---------------------
@@ -242,29 +268,40 @@ function removeMain(name) {
         if (qtyEl) qtyEl.innerText = 0;
     }
     
-    let totalMainQty = getTotalMainQty();
-    trimSidesToMatch(totalMainQty);
+    let totalMain = getTotalMainQty();
     
-    if (totalMainQty === 0) {
-        let sidesSection = document.getElementById("sides");
-        if (sidesSection) sidesSection.classList.add("hidden");
-        clearAllSides();
+    // Remove excess sides
+    while (selectedSides.length > totalMain) {
+        let removed = selectedSides.pop();
+        updateSideHighlight(removed.name);
     }
     
+    // Hide sides section if no mains
+    if (totalMain === 0) {
+        selectedSides = [];
+        document.querySelectorAll(".side").forEach(card => {
+            card.classList.remove("selected");
+            let badge = card.querySelector('.selected-count');
+            if (badge) badge.style.display = 'none';
+        });
+        let sidesSection = document.getElementById("sides");
+        if (sidesSection) sidesSection.classList.add("hidden");
+    }
+    
+    updateSideHint();
     updateCart();
 }
 
 function removeSideItem(index) {
     let removed = selectedSides[index];
-    let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
-    if (removedCard) removedCard.classList.remove("selected");
     selectedSides.splice(index, 1);
+    updateSideHighlight(removed.name);
     updateSideHint();
     updateCart();
 }
 
-function removeExtra(i) {
-    extras.splice(i, 1);
+function removeExtra(index) {
+    extras.splice(index, 1);
     updateCart();
 }
 
@@ -273,77 +310,80 @@ function removeExtra(i) {
 // ---------------------
 function toggleCart() {
     let drawer = document.getElementById("cartDrawer");
-    if (drawer) drawer.classList.toggle("open");
-}
-
-// ---------------------
-// ANIMATION
-// ---------------------
-function animateCart() {
-    let cartIcon = document.querySelector('.cart-icon');
-    if (cartIcon) {
-        cartIcon.style.transform = "scale(1.1)";
-        setTimeout(() => {
-            cartIcon.style.transform = "scale(1)";
-        }, 200);
+    if (drawer) {
+        drawer.classList.toggle("open");
     }
 }
 
 // ---------------------
-// CHECKOUT
+// CHECKOUT & RECEIPT
 // ---------------------
 function checkout() {
+    let hasItems = false;
+    for (let k in mains) {
+        if (mains[k].qty > 0) {
+            hasItems = true;
+            break;
+        }
+    }
+    
+    if (!hasItems && selectedSides.length === 0 && extras.length === 0) {
+        alert("🛒 Walang laman ang cart! Mag-add ka muna ng order.");
+        return;
+    }
+    
     let receipt = "";
     let total = 0;
-    let hasItems = false;
     
-    receipt += "═".repeat(30) + "\n";
-    receipt += "   BUDGET BITES\n";
-    receipt += "═".repeat(30) + "\n\n";
-
+    receipt += "╔════════════════════════════════╗\n";
+    receipt += "║        BUDGET BITES            ║\n";
+    receipt += "║    Sa Unang Kagat, I Miss You  ║\n";
+    receipt += "╚════════════════════════════════╝\n\n";
+    
+    receipt += "📋 ORDER SUMMARY:\n";
+    receipt += "─".repeat(40) + "\n\n";
+    
+    // Main dishes
     for (let k in mains) {
         let m = mains[k];
         if (m.qty > 0) {
-            hasItems = true;
             let sub = m.qty * m.price;
             total += sub;
-            receipt += `🍱 ${m.name.replace('_', ' ')} x${m.qty} = ₱${sub}\n`;
+            receipt += `🍱 ${m.name.replace('_', ' ')}\n`;
+            receipt += `   x${m.qty} @ ₱${m.price} = ₱${sub}\n\n`;
         }
     }
-
+    
+    // Side dishes
     if (selectedSides.length > 0) {
-        receipt += `\n🍟 SIDES:\n`;
+        receipt += `🍟 SIDE DISHES (${selectedSides.length} pcs):\n`;
         selectedSides.forEach((side, idx) => {
             total += side.price;
             receipt += `   ${idx + 1}. ${side.name} = ₱${side.price}\n`;
         });
+        receipt += "\n";
     }
-
+    
+    // Extras
     if (extras.length > 0) {
-        receipt += `\n✨ ADD-ONS:\n`;
+        receipt += `✨ ADD-ONS:\n`;
         extras.forEach(e => {
             total += e.price;
             receipt += `   • ${e.name} = ₱${e.price}\n`;
         });
+        receipt += "\n";
     }
-
-    if (!hasItems && selectedSides.length === 0 && extras.length === 0) {
-        alert("🛒 Walang laman ang cart!");
-        return;
-    }
-
-    receipt += "\n" + "─".repeat(30) + "\n";
-    receipt += `💰 TOTAL: ₱${total}\n`;
-    receipt += "═".repeat(30) + "\n";
-    receipt += "Salamat sa order! ♡";
-
-    let receiptEl = document.getElementById("receipt");
-    let finalTotal = document.getElementById("final-total");
-    let modal = document.getElementById("modal");
     
-    if (receiptEl) receiptEl.innerText = receipt;
-    if (finalTotal) finalTotal.innerText = total;
-    if (modal) modal.style.display = "flex";
+    receipt += "─".repeat(40) + "\n";
+    receipt += `💰 TOTAL AMOUNT: ₱${total}\n`;
+    receipt += "─".repeat(40) + "\n\n";
+    receipt += "🙏 Salamat sa iyong order!\n";
+    receipt += "🏫 CSN - Budget Bites\n";
+    receipt += "⭐ Rate us 5 stars! ⭐\n";
+    
+    document.getElementById("receipt").innerText = receipt;
+    document.getElementById("final-total").innerText = total;
+    document.getElementById("modal").style.display = "flex";
 }
 
 // ---------------------
@@ -353,25 +393,49 @@ function resetOrder() {
     mains = {};
     selectedSides = [];
     extras = [];
-
-    document.querySelectorAll(".side").forEach(c => c.classList.remove("selected"));
-    document.querySelectorAll('[id^="qty-"]').forEach(el => el.innerText = "0");
     
+    // Reset all side cards
+    document.querySelectorAll(".side").forEach(card => {
+        card.classList.remove("selected");
+        let badge = card.querySelector('.selected-count');
+        if (badge) badge.style.display = 'none';
+    });
+    
+    // Reset all quantity displays
+    document.querySelectorAll('[id^="qty-"]').forEach(el => {
+        el.innerText = "0";
+    });
+    
+    // Hide sides section
     let sidesSection = document.getElementById("sides");
-    let modal = document.getElementById("modal");
-    let sideHint = document.getElementById("sideHint");
-    
     if (sidesSection) sidesSection.classList.add("hidden");
+    
+    // Hide modal
+    let modal = document.getElementById("modal");
     if (modal) modal.style.display = "none";
+    
+    // Clear side hint
+    let sideHint = document.getElementById("sideHint");
     if (sideHint) sideHint.innerHTML = "";
-
+    
+    // Update cart
     updateCart();
 }
 
-// Close modal when clicking outside
+// ---------------------
+// CLOSE MODAL ON OUTSIDE CLICK
+// ---------------------
 window.onclick = function(event) {
     let modal = document.getElementById("modal");
     if (event.target === modal && modal) {
         modal.style.display = "none";
     }
 }
+
+// ---------------------
+// INITIALIZE ON PAGE LOAD
+// ---------------------
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Budget Bites - Ready!");
+    updateCart();
+});
