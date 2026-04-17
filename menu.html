@@ -76,32 +76,24 @@
         <span>02</span> Choose Your Sides
     </div>
 
-    <section id="sides" class="section-sm hidden">
-        <div class="side-header">
-            <h2 class="menu-title">🍟 Side Dishes</h2>
-            <p id="sideHint" class="side-hint"></p>
+    <!-- SIDE DISHES SECTION -->
+<section id="sides" class="section-sm hidden">
+    <h2 class="menu-title">🍟 Side Dish</h2>
+    <p id="sideHint" style="font-size:13px; margin-bottom:15px;"></p>
+    <div class="grid">
+        <div class="card side" data-name="Fries" onclick="selectSide('Fries',55,this)">
+            <img src="fries.jpg">
+            <h3>Fries</h3>
+            <p class="price">₱55</p>
         </div>
 
-        <div class="grid">
-            <div class="card side" data-name="Fries" onclick="selectSide('Fries',55,this)">
-                <div class="card-image">
-                    <img src="fries.jpg" alt="Fries">
-                </div>
-                <h3>Fries</h3>
-                <p class="price">₱55</p>
-                <div class="select-indicator">✓</div>
-            </div>
-
-            <div class="card side" data-name="Cheese Sticks" onclick="selectSide('Cheese Sticks',60,this)">
-                <div class="card-image">
-                    <img src="cheese.jpg" alt="Cheese Sticks">
-                </div>
-                <h3>Cheese Sticks</h3>
-                <p class="price">₱60</p>
-                <div class="select-indicator">✓</div>
-            </div>
+        <div class="card side" data-name="Cheese Sticks" onclick="selectSide('Cheese Sticks',60,this)">
+            <img src="cheese.jpg">
+            <h3>Cheese Sticks</h3>
+            <p class="price">₱60</p>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- STEP 3: ADD-ONS -->
     <div class="step-label">

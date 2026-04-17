@@ -1,5 +1,5 @@
 // =====================
-// BUDGET BITES - WORKING VERSION
+// BUDGET BITES - WORKING SIDE DISH VERSION
 // =====================
 
 let mains = {};
@@ -66,10 +66,10 @@ function updateSideHint() {
         if (totalMain > 0) {
             if (currentSideCount < totalMain) {
                 let remaining = totalMain - currentSideCount;
-                sideHint.innerHTML = `✨ Pwede ka pang pumili ng ${remaining} side dish(es) (${currentSideCount}/${totalMain} napili)`;
+                sideHint.innerHTML = `✨ Pwede ka pang pumili ng ${remaining} na side dish (${currentSideCount}/${totalMain} napili)`;
                 sideHint.style.color = "#c9a46c";
             } else if (currentSideCount === totalMain) {
-                sideHint.innerHTML = `✅ Napili mo na lahat ng ${totalMain} side dish(es)! Click a side to change it.`;
+                sideHint.innerHTML = `✅ Napili mo na lahat ng ${totalMain} side dish! Pwede mong palitan ang isang side sa pamamagitan ng pag-click sa iba.`;
                 sideHint.style.color = "#4caf50";
             }
         } else {
@@ -84,6 +84,7 @@ function trimSidesToMatch(maxCount) {
         let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
         if (removedCard) removedCard.classList.remove("selected");
     }
+    updateSideHint();
 }
 
 function clearAllSides() {
@@ -96,38 +97,58 @@ function clearAllSides() {
 }
 
 // ---------------------
-// SIDE DISH - DIRECT ONCLICK FIX
+// SIDE DISH - FIXED: Hindi na nagto-toggle, nag-a-add lang hanggang limit
 // ---------------------
 function selectSide(name, price, element) {
     let totalMainQty = getTotalMainQty();
     
+    // Check kung may main dish
     if (totalMainQty === 0) {
-        alert("📢 Pumili ka muna ng main dish!");
+        alert("📢 Pumili ka muna ng main dish bago pumili ng side!");
         return;
     }
     
-    // Check if this side is already selected
+    // Check kung ang side ay napili na ba
     let existingIndex = selectedSides.findIndex(s => s.name === name);
     
-    // If already selected, remove it
+    // KUNG NAPILI NA - huwag mag-add, ipakita na napili na
     if (existingIndex !== -1) {
-        selectedSides.splice(existingIndex, 1);
-        element.classList.remove("selected");
-        updateSideHint();
-        updateCart();
-        animateCart();
+        alert(`⚠️ "${name}" ay napili mo na! Pwede kang pumili ng ibang side dish.`);
         return;
     }
     
-    // Check if we can add more sides
+    // KUNG HINDI PA NAPILI - check kung may available na slot
     if (selectedSides.length < totalMainQty) {
+        // MAG-ADD NG SIDE
         selectedSides.push({ name, price });
         element.classList.add("selected");
-        animateCart();
         updateSideHint();
         updateCart();
+        
+        // Animation
+        element.style.transform = "scale(0.95)";
+        setTimeout(() => {
+            element.style.transform = "scale(1)";
+        }, 150);
+        
+        animateCart();
     } else {
-        alert(`⚠️ ${totalMainQty} main dish(es) = ${totalMainQty} side(s) lang! Pwede mong i-remove muna ang isang side bago mag-add ng bago.`);
+        // WALA NG SLOT - tanungin kung gusto palitan
+        let replaceChoice = confirm(`⚠️ ${totalMainQty} main dish(es) = ${totalMainQty} side(s) lang! Gusto mo bang palitan ang huli mong napiling side ng "${name}"?`);
+        
+        if (replaceChoice) {
+            // ALISIN ANG HULING SIDE
+            let removed = selectedSides.pop();
+            let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
+            if (removedCard) removedCard.classList.remove("selected");
+            
+            // IDAGDAG ANG BAGONG SIDE
+            selectedSides.push({ name, price });
+            element.classList.add("selected");
+            updateSideHint();
+            updateCart();
+            animateCart();
+        }
     }
 }
 
@@ -147,7 +168,7 @@ function addExtraItem(name, price, element) {
 }
 
 // ---------------------
-// UPDATE CART
+// UPDATE CART DISPLAY
 // ---------------------
 function updateCart() {
     let list = document.getElementById("order-list");
@@ -169,7 +190,7 @@ function updateCart() {
                 <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff3e0; border-radius: 10px; margin-bottom: 8px;">
                     <span>🍱 ${m.name.replace('_', ' ')} x${m.qty}</span>
                     <span>₱${sub}</span>
-                    <button onclick="removeMain('${m.name}')" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
+                    <button onclick="removeMain('${m.name}')" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
                 </li>
             `;
         }
@@ -181,9 +202,9 @@ function updateCart() {
         count++;
         list.innerHTML += `
             <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f5f5f5; border-radius: 10px; margin-bottom: 8px;">
-                <span>🍟 ${side.name}</span>
+                <span>🍟 ${side.name} #${idx + 1}</span>
                 <span>₱${side.price}</span>
-                <button onclick="removeSideItem(${idx})" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
+                <button onclick="removeSideItem(${idx})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
             </li>
         `;
     });
@@ -196,7 +217,7 @@ function updateCart() {
             <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fafafa; border-radius: 10px; margin-bottom: 8px;">
                 <span>✨ ${e.name}</span>
                 <span>₱${e.price}</span>
-                <button onclick="removeExtra(${i})" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
+                <button onclick="removeExtra(${i})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer;">✕</button>
             </li>
         `;
     });
@@ -261,10 +282,10 @@ function toggleCart() {
 function animateCart() {
     let cartIcon = document.querySelector('.cart-icon');
     if (cartIcon) {
-        cartIcon.classList.add('cart-bump');
+        cartIcon.style.transform = "scale(1.1)";
         setTimeout(() => {
-            cartIcon.classList.remove('cart-bump');
-        }, 300);
+            cartIcon.style.transform = "scale(1)";
+        }, 200);
     }
 }
 
