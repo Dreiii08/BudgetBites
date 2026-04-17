@@ -35,44 +35,54 @@
     <div class="menu-wrapper container">
 
         <!-- STEP 1: MAIN -->
-        <div class="step-label">Step 1 — Pick Your Main Dish</div>
-        <section class="section-sm">
-            <h2 class="menu-title">🍱 Main Dish</h2>
-            <div class="grid">
-                <div class="card main" onclick="selectMain('Shanghai Rice', 49, this)">
-                    <img src="shanghai.jpg" alt="Shanghai Rice">
-                    <h3>Shanghai Rice</h3>
-                    <p class="price">₱49</p>
-                    <small>Giniling, wrapper, egg & rice</small>
-                </div>
-                <div class="card main" onclick="selectMain('Sisig Tofu', 49, this)">
-                    <img src="sisig.jpg" alt="Sisig Tofu">
-                    <h3>Sisig Tofu</h3>
-                    <p class="price">₱49</p>
-                    <small>Tokwa, siling green, oyster sauce & rice</small>
-                </div>
-            </div>
-        </section>
+<div class="step-label">Step 1 — Pick Your Main Dish</div>
+
+<section class="section-sm">
+    <h2 class="menu-title">🍱 Main Dish (You can choose more than one)</h2>
+
+    <div class="grid">
+        <div class="card main" onclick="toggleMain('Shanghai Rice', 49, this)">
+            <img src="shanghai.jpg" alt="Shanghai Rice">
+            <h3>Shanghai Rice</h3>
+            <p class="price">₱49</p>
+            <small>Giniling, wrapper, egg & rice</small>
+        </div>
+
+        <div class="card main" onclick="toggleMain('Sisig Tofu', 49, this)">
+            <img src="sisig.jpg" alt="Sisig Tofu">
+            <h3>Sisig Tofu</h3>
+            <p class="price">₱49</p>
+            <small>Tokwa, siling green, oyster sauce & rice</small>
+        </div>
+    </div>
+</section>
 
         <!-- STEP 2: SIDE -->
         <div class="step-label">Step 2 — Pick a Side</div>
-        <section id="sides" class="section-sm hidden">
-            <h2 class="menu-title">🍟 Side Dish</h2>
-            <div class="grid">
-                <div class="card side" onclick="addSide('Fries', 55, this)">
-                    <img src="fries.jpg" alt="Fries">
-                    <h3>Fries</h3>
-                    <p class="price">₱55</p>
-                    <small>With cheese, bbq, or sour cream dressing</small>
-                </div>
-                <div class="card side" onclick="addSide('Cheese Sticks', 60, this)">
-                    <img src="cheese.jpg" alt="Cheese Sticks">
-                    <h3>Cheese Sticks</h3>
-                    <p class="price">₱60</p>
-                    <small>Crispy & cheesy — 96 pcs per batch</small>
-                </div>
-            </div>
-        </section>
+        <!-- STEP 2: SIDE -->
+<div class="step-label">Step 2 — Pick Side Dish (Based on your mains)</div>
+
+<section id="sides" class="section-sm hidden">
+    <h2 class="menu-title">🍟 Side Dish</h2>
+
+    <p id="sideHint" style="margin-bottom:10px; color: #888;"></p>
+
+    <div class="grid">
+        <div class="card side" onclick="addSide('Fries', 55, this)">
+            <img src="fries.jpg" alt="Fries">
+            <h3>Fries</h3>
+            <p class="price">₱55</p>
+            <small>With cheese, bbq, or sour cream dressing</small>
+        </div>
+
+        <div class="card side" onclick="addSide('Cheese Sticks', 60, this)">
+            <img src="cheese.jpg" alt="Cheese Sticks">
+            <h3>Cheese Sticks</h3>
+            <p class="price">₱60</p>
+            <small>Crispy & cheesy — 96 pcs per batch</small>
+        </div>
+    </div>
+</section>
 
         <!-- SNACKS & DESSERTS -->
 <div class="step-label">Add-ons — Snacks & Desserts (Optional)</div>
