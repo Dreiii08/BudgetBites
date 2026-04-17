@@ -1,5 +1,5 @@
 // =====================
-// BUDGET BITES - COMPLETELY FIXED
+// BUDGET BITES - WORKING VERSION
 // =====================
 
 let mains = {};
@@ -28,7 +28,11 @@ function changeMainQty(name, price, el, change) {
 
     let sidesSection = document.getElementById("sides");
     if (sidesSection) {
-        sidesSection.classList.toggle("hidden", !hasMain);
+        if (hasMain) {
+            sidesSection.classList.remove("hidden");
+        } else {
+            sidesSection.classList.add("hidden");
+        }
     }
     
     updateSideHint();
@@ -46,7 +50,11 @@ function changeMainQty(name, price, el, change) {
 }
 
 function getTotalMainQty() {
-    return Object.values(mains).reduce((a, b) => a + b.qty, 0);
+    let total = 0;
+    for (let k in mains) {
+        total += mains[k].qty;
+    }
+    return total;
 }
 
 function updateSideHint() {
@@ -58,10 +66,10 @@ function updateSideHint() {
         if (totalMain > 0) {
             if (currentSideCount < totalMain) {
                 let remaining = totalMain - currentSideCount;
-                sideHint.innerHTML = `✨ You can choose ${remaining} more side dish(es) (${currentSideCount}/${totalMain} selected)`;
+                sideHint.innerHTML = `✨ Pwede ka pang pumili ng ${remaining} side dish(es) (${currentSideCount}/${totalMain} napili)`;
                 sideHint.style.color = "#c9a46c";
             } else if (currentSideCount === totalMain) {
-                sideHint.innerHTML = `✅ All ${totalMain} side dish(es) selected! Click a side to change it.`;
+                sideHint.innerHTML = `✅ Napili mo na lahat ng ${totalMain} side dish(es)! Click a side to change it.`;
                 sideHint.style.color = "#4caf50";
             }
         } else {
@@ -73,14 +81,14 @@ function updateSideHint() {
 function trimSidesToMatch(maxCount) {
     while (selectedSides.length > maxCount) {
         let removed = selectedSides.pop();
-        let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
+        let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
         if (removedCard) removedCard.classList.remove("selected");
     }
 }
 
 function clearAllSides() {
     selectedSides.forEach(side => {
-        let card = document.querySelector(`.side[data-side-name="${side.name}"]`);
+        let card = document.querySelector(`.side[data-name="${side.name}"]`);
         if (card) card.classList.remove("selected");
     });
     selectedSides = [];
@@ -88,30 +96,9 @@ function clearAllSides() {
 }
 
 // ---------------------
-// SIDE DISH - FIXED: Event listener approach
+// SIDE DISH - DIRECT ONCLICK FIX
 // ---------------------
-function initializeSideListeners() {
-    document.querySelectorAll('.side').forEach(card => {
-        card.removeEventListener('click', sideClickHandler);
-        card.addEventListener('click', sideClickHandler);
-    });
-    
-    document.querySelectorAll('.extra-card').forEach(card => {
-        card.removeEventListener('click', extraClickHandler);
-        card.addEventListener('click', extraClickHandler);
-    });
-}
-
-function sideClickHandler(event) {
-    // Stop propagation to prevent double triggers
-    event.stopPropagation();
-    
-    let card = this;
-    let name = card.getAttribute('data-side-name');
-    let price = parseInt(card.getAttribute('data-side-price'));
-    
-    if (!name || !price) return;
-    
+function selectSide(name, price, element) {
     let totalMainQty = getTotalMainQty();
     
     if (totalMainQty === 0) {
@@ -125,7 +112,7 @@ function sideClickHandler(event) {
     // If already selected, remove it
     if (existingIndex !== -1) {
         selectedSides.splice(existingIndex, 1);
-        card.classList.remove("selected");
+        element.classList.remove("selected");
         updateSideHint();
         updateCart();
         animateCart();
@@ -135,46 +122,28 @@ function sideClickHandler(event) {
     // Check if we can add more sides
     if (selectedSides.length < totalMainQty) {
         selectedSides.push({ name, price });
-        card.classList.add("selected");
+        element.classList.add("selected");
         animateCart();
         updateSideHint();
         updateCart();
     } else {
-        // If at limit, ask user to replace a side
-        let replaceChoice = confirm(`You already have ${selectedSides.length} side(s). Replace the last side with "${name}"?`);
-        
-        if (replaceChoice) {
-            // Remove the last selected side
-            let removed = selectedSides.pop();
-            let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
-            if (removedCard) removedCard.classList.remove("selected");
-            
-            // Add the new side
-            selectedSides.push({ name, price });
-            card.classList.add("selected");
-            updateSideHint();
-            updateCart();
-            animateCart();
-        }
+        alert(`⚠️ ${totalMainQty} main dish(es) = ${totalMainQty} side(s) lang! Pwede mong i-remove muna ang isang side bago mag-add ng bago.`);
     }
 }
 
-function extraClickHandler(event) {
-    event.stopPropagation();
-    let name = this.getAttribute('data-extra-name');
-    let price = parseInt(this.getAttribute('data-extra-price'));
+// ---------------------
+// EXTRAS
+// ---------------------
+function addExtraItem(name, price, element) {
+    extras.push({ name, price });
+    updateCart();
+    animateCart();
     
-    if (name && price) {
-        extras.push({ name, price });
-        updateCart();
-        animateCart();
-        
-        // Visual feedback
-        this.style.transform = "scale(0.95)";
-        setTimeout(() => {
-            this.style.transform = "scale(1)";
-        }, 150);
-    }
+    // Visual feedback
+    element.style.transform = "scale(0.95)";
+    setTimeout(() => {
+        element.style.transform = "scale(1)";
+    }, 150);
 }
 
 // ---------------------
@@ -198,7 +167,7 @@ function updateCart() {
 
             list.innerHTML += `
                 <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff3e0; border-radius: 10px; margin-bottom: 8px;">
-                    <span>🍱 ${m.name} x${m.qty}</span>
+                    <span>🍱 ${m.name.replace('_', ' ')} x${m.qty}</span>
                     <span>₱${sub}</span>
                     <button onclick="removeMain('${m.name}')" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
                 </li>
@@ -233,7 +202,7 @@ function updateCart() {
     });
     
     if (list.innerHTML === "") {
-        list.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa;">🛒 Your cart is empty</div>';
+        list.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa;">🛒 Walang laman ang cart</div>';
     }
 
     let cartCount = document.getElementById("cart-count");
@@ -266,7 +235,7 @@ function removeMain(name) {
 
 function removeSideItem(index) {
     let removed = selectedSides[index];
-    let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
+    let removedCard = document.querySelector(`.side[data-name="${removed.name}"]`);
     if (removedCard) removedCard.classList.remove("selected");
     selectedSides.splice(index, 1);
     updateSideHint();
@@ -317,7 +286,7 @@ function checkout() {
             hasItems = true;
             let sub = m.qty * m.price;
             total += sub;
-            receipt += `🍱 ${m.name} x${m.qty} = ₱${sub}\n`;
+            receipt += `🍱 ${m.name.replace('_', ' ')} x${m.qty} = ₱${sub}\n`;
         }
     }
 
@@ -338,14 +307,14 @@ function checkout() {
     }
 
     if (!hasItems && selectedSides.length === 0 && extras.length === 0) {
-        alert("🛒 Empty cart!");
+        alert("🛒 Walang laman ang cart!");
         return;
     }
 
     receipt += "\n" + "─".repeat(30) + "\n";
     receipt += `💰 TOTAL: ₱${total}\n`;
     receipt += "═".repeat(30) + "\n";
-    receipt += "Thank you! ♡";
+    receipt += "Salamat sa order! ♡";
 
     let receiptEl = document.getElementById("receipt");
     let finalTotal = document.getElementById("final-total");
@@ -385,15 +354,3 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
-
-// Initialize everything when page loads
-document.addEventListener("DOMContentLoaded", function() {
-    initializeSideListeners();
-    
-    // Also watch for dynamically added content if needed
-    const observer = new MutationObserver(function() {
-        initializeSideListeners();
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: true });
-});
