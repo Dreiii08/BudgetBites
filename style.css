@@ -43,10 +43,12 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    flex-wrap: nowrap;
 }
 .nav-links {
     display: flex;
     gap: 25px;
+    flex-shrink: 0;
 }
 .nav-links a {
     color: var(--warm);
@@ -636,10 +638,16 @@ body {
     font-size: 22px;
     color: var(--brown);
 }
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
 .logo img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    border-radius: 0 !important;
-    display: block;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
 }
