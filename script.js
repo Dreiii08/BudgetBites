@@ -343,3 +343,53 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+// Add cart animation when adding items
+function animateCart() {
+    let cartIcon = document.querySelector('.cart-icon');
+    cartIcon.classList.add('cart-bump');
+    setTimeout(() => {
+        cartIcon.classList.remove('cart-bump');
+    }, 300);
+}
+
+// Modify your addExtra function to include animation
+// Replace your existing addExtra function with this:
+function addExtra(name, price) {
+    extras.push({ name, price });
+    updateCart();
+    animateCart(); // Add this line
+}
+
+// Modify addSide function to include animation  
+// Replace your existing addSide function with this:
+function addSide(name, price, el) {
+    let totalMainQty = getTotalMainQty();
+    
+    if (totalMainQty === 0) {
+        alert("📢 Please select a main dish first!");
+        return;
+    }
+    
+    let existingIndex = selectedSides.findIndex(s => s.name === name);
+    
+    if (existingIndex !== -1) {
+        selectedSides.splice(existingIndex, 1);
+        el.classList.remove("selected");
+    } else {
+        if (selectedSides.length < totalMainQty) {
+            selectedSides.push({ name, price });
+            el.classList.add("selected");
+            animateCart(); // Add this line
+        } else {
+            alert(`⚠️ You can only choose ${totalMainQty} side dish(es) (one per main dish).`);
+            return;
+        }
+    }
+    
+    updateSideHint();
+    updateCart();
+}
+
+// Modify changeMainQty to add animation when increasing quantity
+// Add this inside changeMainQty function after increasing quantity:
+// if (change > 0) animateCart();

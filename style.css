@@ -399,3 +399,404 @@
 .cart-icon:active {
     animation: addPulse 0.3s ease;
 }
+/* =====================
+   ADDITIONAL ANIMATIONS & AESTHETIC BUTTONS
+   ===================== */
+
+/* Smooth page load animation */
+body {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Button hover effects - preserves your original button styles */
+.btn-primary, .checkout-btn, .new-order-btn, .spin-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover, .checkout-btn:hover, .new-order-btn:hover, .spin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(201, 164, 108, 0.3);
+}
+
+.btn-primary:active, .checkout-btn:active, .new-order-btn:active, .spin-btn:active {
+    transform: translateY(1px);
+}
+
+/* Ripple effect for buttons */
+.btn-primary::after, .checkout-btn::after, .new-order-btn::after, .spin-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:active::after, .checkout-btn:active::after, .new-order-btn:active::after, .spin-btn:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Card hover animations - preserves your card styles */
+.card, .offer-card, .best-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover, .offer-card:hover, .best-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Quantity buttons animation */
+.qty-box button {
+    transition: all 0.2s ease;
+}
+
+.qty-box button:hover {
+    transform: scale(1.1);
+}
+
+.qty-box button:active {
+    transform: scale(0.95);
+}
+
+/* Cart icon bounce animation */
+.cart-icon {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.cart-icon:hover {
+    transform: scale(1.05);
+    background: #a07840;
+    color: white;
+}
+
+.cart-icon:active {
+    transform: scale(0.98);
+}
+
+/* Navbar link underline animation */
+.nav-links a {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    width: 100%;
+}
+
+/* Card image zoom on hover - gentle */
+.best-card img, .card img {
+    transition: transform 0.3s ease;
+}
+
+.best-card:hover img, .card:hover img {
+    transform: scale(1.03);
+}
+
+/* Side card selection animation */
+.card.selected {
+    animation: selectPulse 0.3s ease;
+}
+
+@keyframes selectPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Modal fade in animation */
+.modal {
+    transition: all 0.3s ease;
+}
+
+.modal-content {
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Cart drawer slide animation */
+.cart-drawer {
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Receipt items fade in */
+#order-list li {
+    animation: slideInLeft 0.3s ease;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Price highlight pulse */
+.price {
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.card:hover .price {
+    transform: scale(1.05);
+    color: #b8860b;
+}
+
+/* Section title decoration */
+.section-title {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 3px;
+    animation: widthGrow 0.5s ease;
+}
+
+@keyframes widthGrow {
+    from {
+        width: 0;
+    }
+    to {
+        width: 60px;
+    }
+}
+
+/* Hero content fade up */
+.hero-content {
+    animation: fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hero badge pulse */
+.hero-badge img {
+    animation: softPulse 3s infinite;
+}
+
+@keyframes softPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(201, 164, 108, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(201, 164, 108, 0);
+    }
+}
+
+/* Remove button hover effect */
+.remove-btn {
+    transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Checkout button shine effect */
+.checkout-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.checkout-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.checkout-btn:hover::before {
+    left: 100%;
+}
+
+/* Scroll to top button (optional - add this if you want) */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading state for buttons */
+.btn-primary:disabled, .checkout-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Success animation for cart add */
+@keyframes cartBump {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.cart-bump {
+    animation: cartBump 0.3s ease;
+}
+
+/* Footer link hover */
+.footer {
+    transition: all 0.3s ease;
+}
+
+.footer:hover {
+    background: #2a180c;
+}
+
+/* Offer card icon animation */
+.offer-icon {
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.offer-card:hover .offer-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Best seller price animation */
+.best-card .price {
+    transition: all 0.3s ease;
+}
+
+.best-card:hover .price {
+    animation: pricePop 0.3s ease;
+}
+
+@keyframes pricePop {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Banner text animation */
+.banner h2 {
+    animation: slideInRight 0.5s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Mobile touch feedback */
+@media (max-width: 768px) {
+    .btn-primary:active, .checkout-btn:active, .card:active {
+        transform: scale(0.98);
+    }
+    
+    /* Improve tap targets on mobile */
+    .qty-box button {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .remove-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* Focus states for accessibility */
+.btn-primary:focus, .checkout-btn:focus, .qty-box button:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* Smooth image loading */
+img {
+    transition: opacity 0.3s ease;
+}
+
+img[src=""] {
+    opacity: 0;
+}
+
+/* Custom cursor for interactive elements */
+.card, .btn-primary, .checkout-btn, .cart-icon, .qty-box button {
+    cursor: pointer;
+}
+
+/* Glow effect on hover for featured items */
+.best-card:hover, .offer-card:hover {
+    box-shadow: 0 10px 30px rgba(201, 164, 108, 0.2);
+}
