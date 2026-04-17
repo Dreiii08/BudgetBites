@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Order | Budget Bites</title>
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -16,10 +16,12 @@
             <img src="logo.png" alt="logo">
             <span>BUDGET BITES</span>
         </div>
+
         <nav class="nav-links">
             <a href="index.html">Home</a>
             <a href="menu.html" class="active">Order</a>
         </nav>
+
         <div class="cart-icon" onclick="toggleCart()">
             🛒 <span id="cart-count">0</span>
         </div>
@@ -28,114 +30,154 @@
 
 <!-- HERO -->
 <section class="page-hero">
-    <h1>Order Now</h1>
-    <p>Mix & Match your meal</p>
+    <h1>🍽️ Order Now</h1>
+    <p>Mix & Match — You choose, we cook!</p>
 </section>
 
 <div class="menu-wrapper container">
 
-<!-- STEP 1: MAIN -->
-<div class="step-label">Step 1 — Pick Your Main Dish</div>
+    <!-- STEP 1: MAIN DISH -->
+    <div class="step-label">
+        <span>01</span> Pick Your Main Dish
+    </div>
 
-<section class="section-sm">
-    <div class="grid">
-        <div class="card main">
-            <img src="shanghai.jpg">
-            <h3>Shanghai Rice</h3>
-            <p class="price">₱49</p>
-            <div class="qty-box">
-                <button onclick="changeMainQty('Shanghai_Rice',49,this,-1)">-</button>
-                <span id="qty-Shanghai_Rice">0</span>
-                <button onclick="changeMainQty('Shanghai_Rice',49,this,1)">+</button>
+    <section class="section-sm">
+        <div class="grid">
+            <div class="card main-card">
+                <div class="card-image">
+                    <img src="shanghai.jpg" alt="Shanghai Rice">
+                </div>
+                <h3>Shanghai Rice</h3>
+                <p class="price">₱49</p>
+                <div class="qty-box">
+                    <button class="qty-btn minus" onclick="changeMainQty('Shanghai_Rice',49,this,-1)">−</button>
+                    <span id="qty-Shanghai_Rice" class="qty-num">0</span>
+                    <button class="qty-btn plus" onclick="changeMainQty('Shanghai_Rice',49,this,1)">+</button>
+                </div>
+            </div>
+
+            <div class="card main-card">
+                <div class="card-image">
+                    <img src="sisig.jpg" alt="Sisig Tofu">
+                </div>
+                <h3>Sisig Tofu</h3>
+                <p class="price">₱49</p>
+                <div class="qty-box">
+                    <button class="qty-btn minus" onclick="changeMainQty('Sisig_Tofu',49,this,-1)">−</button>
+                    <span id="qty-Sisig_Tofu" class="qty-num">0</span>
+                    <button class="qty-btn plus" onclick="changeMainQty('Sisig_Tofu',49,this,1)">+</button>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="card main">
-            <img src="sisig.jpg">
-            <h3>Sisig Tofu</h3>
-            <p class="price">₱49</p>
-            <div class="qty-box">
-                <button onclick="changeMainQty('Sisig_Tofu',49,this,-1)">-</button>
-                <span id="qty-Sisig_Tofu">0</span>
-                <button onclick="changeMainQty('Sisig_Tofu',49,this,1)">+</button>
+    <!-- STEP 2: SIDE DISHES -->
+    <div class="step-label">
+        <span>02</span> Choose Your Sides
+    </div>
+
+    <section id="sides" class="section-sm hidden">
+        <div class="side-header">
+            <h2 class="menu-title">🍟 Side Dishes</h2>
+            <p id="sideHint" class="side-hint"></p>
+        </div>
+
+        <div class="grid">
+            <div class="card side" data-name="Fries" onclick="selectSide('Fries',55,this)">
+                <div class="card-image">
+                    <img src="fries.jpg" alt="Fries">
+                </div>
+                <h3>Fries</h3>
+                <p class="price">₱55</p>
+                <div class="select-indicator">✓</div>
+            </div>
+
+            <div class="card side" data-name="Cheese Sticks" onclick="selectSide('Cheese Sticks',60,this)">
+                <div class="card-image">
+                    <img src="cheese.jpg" alt="Cheese Sticks">
+                </div>
+                <h3>Cheese Sticks</h3>
+                <p class="price">₱60</p>
+                <div class="select-indicator">✓</div>
             </div>
         </div>
+    </section>
+
+    <!-- STEP 3: ADD-ONS -->
+    <div class="step-label">
+        <span>03</span> Add Extras
     </div>
-</section>
 
-<!-- SIDE -->
-<div class="step-label">Step 2 — Pick Side (based on mains)</div>
+    <section class="section-sm">
+        <div class="grid">
+            <div class="card extra-card" onclick="addExtraItem('Choco Mallows',25,this)">
+                <div class="card-image">
+                    <img src="mallow.jpg" alt="Choco Mallows">
+                </div>
+                <h3>Choco Mallows</h3>
+                <p class="price">₱25</p>
+                <span class="extra-badge">+ Add</span>
+            </div>
 
-<section id="sides" class="section-sm hidden">
-    <h2 class="menu-title">🍟 Side Dish</h2>
-    <p id="sideHint" style="font-size:13px; margin-bottom:15px;"></p>
-    <div class="grid">
-        <div class="card side" data-name="Fries" onclick="selectSide('Fries',55,this)">
-            <img src="fries.jpg">
-            <h3>Fries</h3>
-            <p class="price">₱55</p>
+            <div class="card extra-card" onclick="addExtraItem('Gellidensed',10,this)">
+                <div class="card-image">
+                    <img src="gelli.jpg" alt="Gellidensed">
+                </div>
+                <h3>Gellidensed</h3>
+                <p class="price">₱10</p>
+                <span class="extra-badge">+ Add</span>
+            </div>
+
+            <div class="card extra-card" onclick="addExtraItem('Hotcake',7,this)">
+                <div class="card-image">
+                    <img src="hotcake.jpg" alt="Hotcake">
+                </div>
+                <h3>Hotcake</h3>
+                <p class="price">₱7</p>
+                <span class="extra-badge">+ Add</span>
+            </div>
         </div>
-
-        <div class="card side" data-name="Cheese Sticks" onclick="selectSide('Cheese Sticks',60,this)">
-            <img src="cheese.jpg">
-            <h3>Cheese Sticks</h3>
-            <p class="price">₱60</p>
-        </div>
-    </div>
-</section>
-
-<!-- EXTRAS -->
-<div class="step-label">Add-ons</div>
-
-<section class="section-sm">
-    <div class="grid">
-        <div class="card" onclick="addExtraItem('Choco Mallows',25,this)">
-            <img src="mallow.jpg">
-            <h3>Choco Mallows</h3>
-            <p class="price">₱25</p>
-        </div>
-
-        <div class="card" onclick="addExtraItem('Gellidensed',10,this)">
-            <img src="gelli.jpg">
-            <h3>Gellidensed</h3>
-            <p class="price">₱10</p>
-        </div>
-
-        <div class="card" onclick="addExtraItem('Hotcake',7,this)">
-            <img src="hotcake.jpg">
-            <h3>Hotcake</h3>
-            <p class="price">₱7</p>
-        </div>
-    </div>
-</section>
+    </section>
 
 </div>
 
 <!-- CART DRAWER -->
 <div id="cartDrawer" class="cart-drawer">
     <div class="cart-header">
-        <h2>Your Order</h2>
-        <button onclick="toggleCart()">✕</button>
+        <h2>🛒 Your Order</h2>
+        <button class="close-cart" onclick="toggleCart()">✕</button>
     </div>
-    <ul id="order-list"></ul>
-    <div class="cart-total">
-        <h3>Total: ₱<span id="total">0</span></h3>
-        <button onclick="checkout()" class="checkout-btn">Checkout</button>
+    <div class="cart-scroll">
+        <ul id="order-list"></ul>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>Total Amount</span>
+            <h3>₱<span id="total">0</span></h3>
+        </div>
+        <button onclick="checkout()" class="checkout-btn">
+            Checkout → 
+        </button>
     </div>
 </div>
 
-<!-- MODAL -->
+<!-- MODAL (RECEIPT) -->
 <div id="modal" class="modal">
     <div class="modal-content">
-        <h2>Receipt</h2>
+        <div class="receipt-header">
+            <h2>🧾 RECEIPT</h2>
+            <p>Budget Bites • CSN</p>
+        </div>
         <pre id="receipt"></pre>
-        <h3>Total: ₱<span id="final-total"></span></h3>
-        <button onclick="resetOrder()" style="background: var(--brown); color: var(--gold); border: none; padding: 12px 30px; border-radius: 30px; margin-top: 15px; cursor: pointer;">New Order</button>
+        <div class="receipt-total">
+            <h3>Total: ₱<span id="final-total"></span></h3>
+        </div>
+        <button onclick="resetOrder()" class="new-order-btn">New Order</button>
     </div>
 </div>
 
 <footer class="footer">
-    <p>©2026 Budget Bites</p>
+    <p>©2026 Budget Bites — Sa Unang Kagat, I Miss You Ka Agad ♡</p>
 </footer>
 
 <script src="script.js"></script>
