@@ -1,96 +1,54 @@
 // =====================
-// BUDGET BITES - JS (UPGRADED)
+// BUDGET BITES - JS
 // =====================
 
-let selectedMains = [];
-let selectedSides = [];
+let selectedMain = null;
+let selectedSide = null;
 let extras = [];
 
-// ---- MAIN DISH (MULTI SELECT) ----
+// ---- MAIN DISH ----
 function selectMain(name, price, el) {
-    let index = selectedMains.findIndex(m => m.name === name);
-
-    if (index > -1) {
-        selectedMains.splice(index, 1);
-        el.classList.remove("selected");
-    } else {
-        selectedMains.push({ name, price, el });
-        el.classList.add("selected");
-    }
-
-    updateSides();
+    document.querySelectorAll('.main').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedMain = { name, price };
+    selectedSide = null;
+    document.querySelectorAll('.side').forEach(c => c.classList.remove('selected'));
+    document.getElementById("sides").classList.remove("hidden");
     updateCart();
 }
 
-// ---- SIDE DISH (LIMIT BASED ON MAINS) ----
+// ---- SIDE DISH ----
 function addSide(name, price, el) {
-    if (selectedMains.length === 0) {
+    if (!selectedMain) {
         alert("Please select a main dish first! 🍱");
         return;
     }
-
-    let existing = selectedSides.find(s => s.name === name);
-
-    if (existing) {
-        selectedSides = selectedSides.filter(s => s.name !== name);
-        el.classList.remove("selected");
-    } else {
-        if (selectedSides.length >= selectedMains.length) {
-            alert(`You can only pick ${selectedMains.length} side(s)! 🍟`);
-            return;
-        }
-
-        selectedSides.push({ name, price, el });
-        el.classList.add("selected");
-    }
-
+    document.querySelectorAll('.side').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedSide = { name, price };
     updateCart();
-}
-
-// ---- UPDATE SIDE VISIBILITY + INFO ----
-function updateSides() {
-    let sidesSection = document.getElementById("sides");
-    let hint = document.getElementById("sideHint");
-
-    if (selectedMains.length > 0) {
-        sidesSection.classList.remove("hidden");
-        if (hint) {
-            hint.innerText = `You selected ${selectedMains.length} main(s) — pick up to ${selectedMains.length} side(s).`;
-        }
-    } else {
-        sidesSection.classList.add("hidden");
-        selectedSides = [];
-
-        document.querySelectorAll('.side').forEach(c => c.classList.remove('selected'));
-
-        if (hint) hint.innerText = "";
-    }
 }
 
 // ---- EXTRAS ----
 function addExtra(name, price) {
     extras.push({ name, price });
     updateCart();
+    // Flash feedback
     showToast(`${name} added! ✅`);
 }
 
-// ---- TOAST ----
+// ---- TOAST NOTIFICATION ----
 function showToast(msg) {
     let toast = document.createElement('div');
     toast.innerText = msg;
     toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
+        position: fixed; bottom: 30px; left: 50%;
         transform: translateX(-50%);
-        background: #2b1a0e;
-        color: #c9a46c;
-        padding: 12px 25px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 14px;
-        z-index: 9999;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        background: #2b1a0e; color: #c9a46c;
+        padding: 12px 25px; border-radius: 20px;
+        font-weight: 600; font-size: 14px;
+        z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        animation: fadeIn 0.3s ease;
     `;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 2000);
@@ -102,61 +60,54 @@ function updateCart() {
     list.innerHTML = "";
     let total = 0;
 
-    // MAIN
-    selectedMains.forEach(m => {
-        total += m.price;
+    if (selectedMain) {
+        total += selectedMain.price;
         list.innerHTML += `
             <li class="main-item">
-                <span>🍱 ${m.name} — ₱${m.price}</span>
+                <span>🍱 ${selectedMain.name} — ₱${selectedMain.price}</span>
+                <button onclick="removeMain()">✕</button>
             </li>`;
-    });
+    }
 
-    // SIDE
-    selectedSides.forEach(s => {
-        total += s.price;
+    if (selectedSide) {
+        total += selectedSide.price;
         list.innerHTML += `
             <li class="side-item">
-                <span>🍟 ${s.name} — ₱${s.price}</span>
+                <span>🍟 ${selectedSide.name} — ₱${selectedSide.price}</span>
+                <button onclick="removeSide()">✕</button>
             </li>`;
-    });
+    }
 
-    // EXTRAS
-    extras.forEach(e => {
+    extras.forEach((e, i) => {
         total += e.price;
         list.innerHTML += `
             <li class="extra-item">
                 <span>✨ ${e.name} — ₱${e.price}</span>
+                <button onclick="removeExtra(${i})">✕</button>
             </li>`;
     });
 
-    // CART COUNT
-    let count = selectedMains.length + selectedSides.length + extras.length;
-
+    let count = (selectedMain ? 1 : 0) + (selectedSide ? 1 : 0) + extras.length;
     document.getElementById("cart-count").innerText = count;
     document.getElementById("total").innerText = total;
 }
 
-// ---- REMOVE MAIN (RESET ALL MAINS) ----
+// ---- REMOVE ITEMS ----
 function removeMain() {
-    selectedMains = [];
-    selectedSides = [];
-
-    document.querySelectorAll('.main, .side')
-        .forEach(c => c.classList.remove('selected'));
-
+    selectedMain = null;
+    selectedSide = null;
+    document.querySelectorAll('.main').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.side').forEach(c => c.classList.remove('selected'));
     document.getElementById("sides").classList.add("hidden");
-
     updateCart();
 }
 
-// ---- REMOVE SIDE ----
-function removeSide(name) {
-    selectedSides = selectedSides.filter(s => s.name !== name);
+function removeSide() {
+    selectedSide = null;
     document.querySelectorAll('.side').forEach(c => c.classList.remove('selected'));
     updateCart();
 }
 
-// ---- REMOVE EXTRA ----
 function removeExtra(i) {
     extras.splice(i, 1);
     updateCart();
@@ -169,28 +120,28 @@ function toggleCart() {
 
 // ---- CHECKOUT ----
 function checkout() {
-    if (selectedMains.length === 0 && extras.length === 0) {
-        alert("Your cart is empty! 🍱");
+    if (!selectedMain && extras.length === 0) {
+        alert("Your cart is empty! Please select at least a main dish. 🍱");
         return;
     }
 
     let receipt = "";
     let total = 0;
 
-    selectedMains.forEach(m => {
-        receipt += `🍱 ${m.name}   ₱${m.price}\n`;
-        total += m.price;
-    });
-
-    selectedSides.forEach(s => {
-        receipt += `🍟 ${s.name}   ₱${s.price}\n`;
-        total += s.price;
-    });
-
+    if (selectedMain) {
+        receipt += `🍱 ${selectedMain.name}   ₱${selectedMain.price}\n`;
+        total += selectedMain.price;
+    }
+    if (selectedSide) {
+        receipt += `🍟 ${selectedSide.name}   ₱${selectedSide.price}\n`;
+        total += selectedSide.price;
+    }
     extras.forEach(e => {
         receipt += `✨ ${e.name}   ₱${e.price}\n`;
         total += e.price;
     });
+
+    receipt += `\n--------------------------`;
 
     document.getElementById("receipt").innerText = receipt;
     document.getElementById("final-total").innerText = total;
@@ -200,20 +151,16 @@ function checkout() {
 
 // ---- RESET ----
 function resetOrder() {
-    selectedMains = [];
-    selectedSides = [];
+    selectedMain = null;
+    selectedSide = null;
     extras = [];
-
-    document.querySelectorAll('.main, .side')
-        .forEach(c => c.classList.remove('selected'));
-
+    document.querySelectorAll('.main, .side').forEach(c => c.classList.remove('selected'));
     document.getElementById("sides").classList.add("hidden");
-
     updateCart();
     document.getElementById("modal").style.display = "none";
 }
 
-// ---- SPIN WHEEL (UNCHANGED) ----
+// ---- SPIN WHEEL ----
 const prizes = [
     "🧋 Bigbrew Milktea",
     "🖊️ Ballpen",
@@ -247,9 +194,7 @@ function spinWheel() {
     let index = Math.floor(Math.random() * prizes.length);
 
     setTimeout(() => {
-        document.getElementById("result").innerText =
-            "🎉 You got: " + prizes[index];
-
+        document.getElementById("result").innerText = "🎉 You got: " + prizes[index];
         isSpinning = false;
         btn.disabled = false;
         btn.innerText = "🎰 SPIN!";
