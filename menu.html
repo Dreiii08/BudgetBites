@@ -45,28 +45,24 @@
         <div class="grid">
 
             <div class="card main-card">
-                <div class="card-image">
-                    <img src="shanghai.jpg" alt="Shanghai Rice">
-                </div>
+                <img src="shanghai.jpg" alt="Shanghai Rice">
                 <h3>Shanghai Rice</h3>
                 <p class="price">₱49</p>
                 <div class="qty-box">
-                    <button class="qty-btn minus" onclick="changeMainQty('Shanghai_Rice',49,this,-1)">−</button>
+                    <button class="qty-btn" onclick="changeMainQty('Shanghai_Rice',49,this,-1)">−</button>
                     <span id="qty-Shanghai_Rice" class="qty-num">0</span>
-                    <button class="qty-btn plus" onclick="changeMainQty('Shanghai_Rice',49,this,1)">+</button>
+                    <button class="qty-btn" onclick="changeMainQty('Shanghai_Rice',49,this,1)">+</button>
                 </div>
             </div>
 
             <div class="card main-card">
-                <div class="card-image">
-                    <img src="sisig.jpg" alt="Sisig Tofu">
-                </div>
+                <img src="sisig.jpg" alt="Sisig Tofu">
                 <h3>Sisig Tofu</h3>
                 <p class="price">₱49</p>
                 <div class="qty-box">
-                    <button class="qty-btn minus" onclick="changeMainQty('Sisig_Tofu',49,this,-1)">−</button>
+                    <button class="qty-btn" onclick="changeMainQty('Sisig_Tofu',49,this,-1)">−</button>
                     <span id="qty-Sisig_Tofu" class="qty-num">0</span>
-                    <button class="qty-btn plus" onclick="changeMainQty('Sisig_Tofu',49,this,1)">+</button>
+                    <button class="qty-btn" onclick="changeMainQty('Sisig_Tofu',49,this,1)">+</button>
                 </div>
             </div>
 
@@ -79,29 +75,23 @@
     </div>
 
     <section id="sides" class="section-sm hidden">
-        <div class="side-header">
+        <div style="margin-bottom: 15px;">
             <h2 class="menu-title">🍟 Side Dishes</h2>
-            <p id="sideHint" class="side-hint"></p>
+            <p id="sideHint" style="font-size: 13px; color: var(--gold); margin-top: 5px;"></p>
         </div>
 
         <div class="grid">
 
-            <div class="card side" data-side-name="Fries" onclick="addSide('Fries',55,this)">
-                <div class="card-image">
-                    <img src="fries.jpg" alt="Fries">
-                </div>
+            <div class="card side" data-side-name="Fries" data-side-price="55">
+                <img src="fries.jpg" alt="Fries">
                 <h3>Fries</h3>
                 <p class="price">₱55</p>
-                <div class="select-indicator"></div>
             </div>
 
-            <div class="card side" data-side-name="Cheese Sticks" onclick="addSide('Cheese Sticks',60,this)">
-                <div class="card-image">
-                    <img src="cheese.jpg" alt="Cheese Sticks">
-                </div>
+            <div class="card side" data-side-name="Cheese Sticks" data-side-price="60">
+                <img src="cheese.jpg" alt="Cheese Sticks">
                 <h3>Cheese Sticks</h3>
                 <p class="price">₱60</p>
-                <div class="select-indicator"></div>
             </div>
 
         </div>
@@ -115,31 +105,22 @@
     <section class="section-sm">
         <div class="grid">
 
-            <div class="card extra-card" onclick="addExtra('Choco Mallows',25)">
-                <div class="card-image">
-                    <img src="mallow.jpg" alt="Choco Mallows">
-                </div>
+            <div class="card extra-card" data-extra-name="Choco Mallows" data-extra-price="25">
+                <img src="mallow.jpg" alt="Choco Mallows">
                 <h3>Choco Mallows</h3>
                 <p class="price">₱25</p>
-                <span class="extra-badge">Add</span>
             </div>
 
-            <div class="card extra-card" onclick="addExtra('Gellidensed',10)">
-                <div class="card-image">
-                    <img src="gelli.jpg" alt="Gellidensed">
-                </div>
+            <div class="card extra-card" data-extra-name="Gellidensed" data-extra-price="10">
+                <img src="gelli.jpg" alt="Gellidensed">
                 <h3>Gellidensed</h3>
                 <p class="price">₱10</p>
-                <span class="extra-badge">Add</span>
             </div>
 
-            <div class="card extra-card" onclick="addExtra('Hotcake',7)">
-                <div class="card-image">
-                    <img src="hotcake.jpg" alt="Hotcake">
-                </div>
+            <div class="card extra-card" data-extra-name="Hotcake" data-extra-price="7">
+                <img src="hotcake.jpg" alt="Hotcake">
                 <h3>Hotcake</h3>
                 <p class="price">₱7</p>
-                <span class="extra-badge">Add</span>
             </div>
 
         </div>
@@ -153,17 +134,10 @@
         <h2>🛒 Your Order</h2>
         <button class="close-cart" onclick="toggleCart()">✕</button>
     </div>
-    <div class="cart-scroll">
-        <ul id="order-list"></ul>
-    </div>
-    <div class="cart-footer">
-        <div class="cart-total">
-            <span>Total</span>
-            <h3>₱<span id="total">0</span></h3>
-        </div>
-        <button onclick="checkout()" class="checkout-btn">
-            Checkout → 
-        </button>
+    <ul id="order-list"></ul>
+    <div class="cart-total">
+        <h3>Total: ₱<span id="total">0</span></h3>
+        <button onclick="checkout()" class="checkout-btn">Checkout →</button>
     </div>
 </div>
 
@@ -178,7 +152,7 @@
         <div class="receipt-total">
             <h3>Total: ₱<span id="final-total"></span></h3>
         </div>
-        <button onclick="resetOrder()" class="new-order-btn">New Order</button>
+        <button onclick="resetOrder()" style="background: var(--brown); color: var(--gold); border: none; padding: 12px 30px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;">New Order</button>
     </div>
 </div>
 

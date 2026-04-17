@@ -1,5 +1,5 @@
 // =====================
-// BUDGET BITES - FIXED SIDE DISH LOGIC
+// BUDGET BITES - COMPLETELY FIXED
 // =====================
 
 let mains = {};
@@ -26,7 +26,10 @@ function changeMainQty(name, price, el, change) {
     let totalMainQty = getTotalMainQty();
     let hasMain = totalMainQty > 0;
 
-    document.getElementById("sides").classList.toggle("hidden", !hasMain);
+    let sidesSection = document.getElementById("sides");
+    if (sidesSection) {
+        sidesSection.classList.toggle("hidden", !hasMain);
+    }
     
     updateSideHint();
     
@@ -51,19 +54,19 @@ function updateSideHint() {
     let sideHint = document.getElementById("sideHint");
     let currentSideCount = selectedSides.length;
     
-    if (totalMain > 0) {
-        if (currentSideCount < totalMain) {
-            let remaining = totalMain - currentSideCount;
-            sideHint.innerHTML = `✨ You can choose ${remaining} more side dish(es) (${currentSideCount}/${totalMain} selected)`;
-            sideHint.style.color = "#c9a46c";
-            sideHint.style.fontWeight = "500";
-        } else if (currentSideCount === totalMain) {
-            sideHint.innerHTML = `✅ All ${totalMain} side dish(es) selected! Click a side to change it.`;
-            sideHint.style.color = "#4caf50";
-            sideHint.style.fontWeight = "500";
+    if (sideHint) {
+        if (totalMain > 0) {
+            if (currentSideCount < totalMain) {
+                let remaining = totalMain - currentSideCount;
+                sideHint.innerHTML = `✨ You can choose ${remaining} more side dish(es) (${currentSideCount}/${totalMain} selected)`;
+                sideHint.style.color = "#c9a46c";
+            } else if (currentSideCount === totalMain) {
+                sideHint.innerHTML = `✅ All ${totalMain} side dish(es) selected! Click a side to change it.`;
+                sideHint.style.color = "#4caf50";
+            }
+        } else {
+            sideHint.innerHTML = "";
         }
-    } else {
-        sideHint.innerHTML = "";
     }
 }
 
@@ -73,7 +76,6 @@ function trimSidesToMatch(maxCount) {
         let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
         if (removedCard) removedCard.classList.remove("selected");
     }
-    updateSideSelectionUI();
 }
 
 function clearAllSides() {
@@ -82,18 +84,34 @@ function clearAllSides() {
         if (card) card.classList.remove("selected");
     });
     selectedSides = [];
-    updateSideSelectionUI();
-}
-
-function updateSideSelectionUI() {
     updateSideHint();
-    updateCart();
 }
 
 // ---------------------
-// SIDE DISH - Fixed: Can select up to main quantity, can change selection
+// SIDE DISH - FIXED: Event listener approach
 // ---------------------
-function addSide(name, price, el) {
+function initializeSideListeners() {
+    document.querySelectorAll('.side').forEach(card => {
+        card.removeEventListener('click', sideClickHandler);
+        card.addEventListener('click', sideClickHandler);
+    });
+    
+    document.querySelectorAll('.extra-card').forEach(card => {
+        card.removeEventListener('click', extraClickHandler);
+        card.addEventListener('click', extraClickHandler);
+    });
+}
+
+function sideClickHandler(event) {
+    // Stop propagation to prevent double triggers
+    event.stopPropagation();
+    
+    let card = this;
+    let name = card.getAttribute('data-side-name');
+    let price = parseInt(card.getAttribute('data-side-price'));
+    
+    if (!name || !price) return;
+    
     let totalMainQty = getTotalMainQty();
     
     if (totalMainQty === 0) {
@@ -104,10 +122,10 @@ function addSide(name, price, el) {
     // Check if this side is already selected
     let existingIndex = selectedSides.findIndex(s => s.name === name);
     
-    // If already selected, remove it (unselect)
+    // If already selected, remove it
     if (existingIndex !== -1) {
         selectedSides.splice(existingIndex, 1);
-        el.classList.remove("selected");
+        card.classList.remove("selected");
         updateSideHint();
         updateCart();
         animateCart();
@@ -117,7 +135,7 @@ function addSide(name, price, el) {
     // Check if we can add more sides
     if (selectedSides.length < totalMainQty) {
         selectedSides.push({ name, price });
-        el.classList.add("selected");
+        card.classList.add("selected");
         animateCart();
         updateSideHint();
         updateCart();
@@ -133,7 +151,7 @@ function addSide(name, price, el) {
             
             // Add the new side
             selectedSides.push({ name, price });
-            el.classList.add("selected");
+            card.classList.add("selected");
             updateSideHint();
             updateCart();
             animateCart();
@@ -141,13 +159,22 @@ function addSide(name, price, el) {
     }
 }
 
-// ---------------------
-// EXTRAS
-// ---------------------
-function addExtra(name, price) {
-    extras.push({ name, price });
-    updateCart();
-    animateCart();
+function extraClickHandler(event) {
+    event.stopPropagation();
+    let name = this.getAttribute('data-extra-name');
+    let price = parseInt(this.getAttribute('data-extra-price'));
+    
+    if (name && price) {
+        extras.push({ name, price });
+        updateCart();
+        animateCart();
+        
+        // Visual feedback
+        this.style.transform = "scale(0.95)";
+        setTimeout(() => {
+            this.style.transform = "scale(1)";
+        }, 150);
+    }
 }
 
 // ---------------------
@@ -170,9 +197,10 @@ function updateCart() {
             count += m.qty;
 
             list.innerHTML += `
-                <li class="main-item">
-                    🍱 ${m.name} x${m.qty} — ₱${sub}
-                    <button onclick="removeMain('${m.name}')">✕</button>
+                <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fff3e0; border-radius: 10px; margin-bottom: 8px;">
+                    <span>🍱 ${m.name} x${m.qty}</span>
+                    <span>₱${sub}</span>
+                    <button onclick="removeMain('${m.name}')" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
                 </li>
             `;
         }
@@ -183,9 +211,10 @@ function updateCart() {
         total += side.price;
         count++;
         list.innerHTML += `
-            <li class="side-item">
-                🍟 ${side.name} (Side #${idx + 1}) — ₱${side.price}
-                <button onclick="removeSideItem(${idx})">✕</button>
+            <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f5f5f5; border-radius: 10px; margin-bottom: 8px;">
+                <span>🍟 ${side.name}</span>
+                <span>₱${side.price}</span>
+                <button onclick="removeSideItem(${idx})" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
             </li>
         `;
     });
@@ -195,9 +224,10 @@ function updateCart() {
         total += e.price;
         count++;
         list.innerHTML += `
-            <li class="extra-item">
-                ✨ ${e.name} — ₱${e.price}
-                <button onclick="removeExtra(${i})">✕</button>
+            <li style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #fafafa; border-radius: 10px; margin-bottom: 8px;">
+                <span>✨ ${e.name}</span>
+                <span>₱${e.price}</span>
+                <button onclick="removeExtra(${i})" style="background: #e74c3c; color: white; border: none; padding: 3px 8px; border-radius: 6px; cursor: pointer;">✕</button>
             </li>
         `;
     });
@@ -206,8 +236,10 @@ function updateCart() {
         list.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa;">🛒 Your cart is empty</div>';
     }
 
-    document.getElementById("cart-count").innerText = count;
-    document.getElementById("total").innerText = total;
+    let cartCount = document.getElementById("cart-count");
+    let totalSpan = document.getElementById("total");
+    if (cartCount) cartCount.innerText = count;
+    if (totalSpan) totalSpan.innerText = total;
 }
 
 // ---------------------
@@ -224,7 +256,8 @@ function removeMain(name) {
     trimSidesToMatch(totalMainQty);
     
     if (totalMainQty === 0) {
-        document.getElementById("sides").classList.add("hidden");
+        let sidesSection = document.getElementById("sides");
+        if (sidesSection) sidesSection.classList.add("hidden");
         clearAllSides();
     }
     
@@ -249,7 +282,8 @@ function removeExtra(i) {
 // CART DRAWER
 // ---------------------
 function toggleCart() {
-    document.getElementById("cartDrawer").classList.toggle("open");
+    let drawer = document.getElementById("cartDrawer");
+    if (drawer) drawer.classList.toggle("open");
 }
 
 // ---------------------
@@ -313,9 +347,13 @@ function checkout() {
     receipt += "═".repeat(30) + "\n";
     receipt += "Thank you! ♡";
 
-    document.getElementById("receipt").innerText = receipt;
-    document.getElementById("final-total").innerText = total;
-    document.getElementById("modal").style.display = "flex";
+    let receiptEl = document.getElementById("receipt");
+    let finalTotal = document.getElementById("final-total");
+    let modal = document.getElementById("modal");
+    
+    if (receiptEl) receiptEl.innerText = receipt;
+    if (finalTotal) finalTotal.innerText = total;
+    if (modal) modal.style.display = "flex";
 }
 
 // ---------------------
@@ -329,9 +367,13 @@ function resetOrder() {
     document.querySelectorAll(".side").forEach(c => c.classList.remove("selected"));
     document.querySelectorAll('[id^="qty-"]').forEach(el => el.innerText = "0");
     
-    document.getElementById("sides").classList.add("hidden");
-    document.getElementById("modal").style.display = "none";
-    document.getElementById("sideHint").innerHTML = "";
+    let sidesSection = document.getElementById("sides");
+    let modal = document.getElementById("modal");
+    let sideHint = document.getElementById("sideHint");
+    
+    if (sidesSection) sidesSection.classList.add("hidden");
+    if (modal) modal.style.display = "none";
+    if (sideHint) sideHint.innerHTML = "";
 
     updateCart();
 }
@@ -339,17 +381,19 @@ function resetOrder() {
 // Close modal when clicking outside
 window.onclick = function(event) {
     let modal = document.getElementById("modal");
-    if (event.target === modal) {
+    if (event.target === modal && modal) {
         modal.style.display = "none";
     }
 }
 
-// Add data attributes to side cards on load
+// Initialize everything when page loads
 document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".side").forEach(card => {
-        let name = card.querySelector("h3")?.innerText;
-        if (name) {
-            card.setAttribute("data-side-name", name);
-        }
+    initializeSideListeners();
+    
+    // Also watch for dynamically added content if needed
+    const observer = new MutationObserver(function() {
+        initializeSideListeners();
     });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
 });
