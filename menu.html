@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order | Budget Bites</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="logo">
+                <img src="logo.png" alt="Budget Bites Logo">
+                <span>BUDGET BITES</span>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="menu.html" class="active">Order</a>
+                <a href="financials.html">Financials</a>
+            </nav>
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒 <span id="cart-count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <h1>Order Now</h1>
+        <p>Mix & Match — your meal, your way!</p>
+    </section>
+
+    <div class="menu-wrapper container">
+
+        <!-- STEP 1: MAIN -->
+        <div class="step-label">Step 1 — Pick Your Main Dish</div>
+        <section class="section-sm">
+            <h2 class="menu-title">🍱 Main Dish</h2>
+            <div class="grid">
+                <div class="card main" onclick="selectMain('Shanghai Rice', 49, this)">
+                    <img src="shanghai.jpg" alt="Shanghai Rice">
+                    <h3>Shanghai Rice</h3>
+                    <p class="price">₱49</p>
+                    <small>Giniling, wrapper, egg & rice</small>
+                </div>
+                <div class="card main" onclick="selectMain('Sisig Tofu', 49, this)">
+                    <img src="sisig.jpg" alt="Sisig Tofu">
+                    <h3>Sisig Tofu</h3>
+                    <p class="price">₱49</p>
+                    <small>Tokwa, siling green, oyster sauce & rice</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- STEP 2: SIDE -->
+        <div class="step-label">Step 2 — Pick a Side</div>
+        <section id="sides" class="section-sm hidden">
+            <h2 class="menu-title">🍟 Side Dish</h2>
+            <div class="grid">
+                <div class="card side" onclick="addSide('Fries', 55, this)">
+                    <img src="fries.jpg" alt="Fries">
+                    <h3>Fries</h3>
+                    <p class="price">₱55</p>
+                    <small>With cheese, bbq, or sour cream dressing</small>
+                </div>
+                <div class="card side" onclick="addSide('Cheese Sticks', 60, this)">
+                    <img src="cheese.jpg" alt="Cheese Sticks">
+                    <h3>Cheese Sticks</h3>
+                    <p class="price">₱60</p>
+                    <small>Crispy & cheesy — 96 pcs per batch</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- SNACKS -->
+        <div class="step-label">Add-ons — Snacks & Desserts (Optional)</div>
+        <section class="section-sm">
+            <h2 class="menu-title">🍿 Snacks</h2>
+            <div class="grid">
+                <div class="card" onclick="addExtra('Choco Mallows', 25)">
+                    <img src="mallow.jpg" alt="Choco Mallows">
+                    <h3>Choco Mallows</h3>
+                    <p class="price">₱25</p>
+                    <small>5 pcs for ₱25 — promo deal!</small>
+                </div>
+                <div class="card" onclick="addExtra('Gellidensed', 10)">
+                    <img src="gelli.jpg" alt="Gellidensed">
+                    <h3>Gellidensed</h3>
+                    <p class="price">₱10</p>
+                    <small>Gellatin + condensed — sweet & jiggly!</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-sm">
+            <h2 class="menu-title">🍰 Desserts</h2>
+            <div class="grid">
+                <div class="card" onclick="addExtra('Hotcake', 7)">
+                    <img src="hotcake.jpg" alt="Hotcake">
+                    <h3>Hotcake</h3>
+                    <p class="price">₱7</p>
+                    <small>Soft & fluffy — 50 pcs for 2 sets</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPIN GAME -->
+        <section class="section-sm spin-section">
+            <h2 class="menu-title">🎡 Pick One, See Your Destiny!</h2>
+            <p class="spin-sub">₱2 per spin — Win exciting prizes!</p>
+            <div class="prizes-list">
+                <span>🧋 Milktea</span><span>🖊️ Ballpen</span><span>📸 Instax</span>
+                <span>🍩 Donut</span><span>🍟 Fries</span><span>🥞 Pancake</span>
+                <span>🍬 Gummy</span><span>🍫 Chips</span>
+            </div>
+            <div class="wheel-box">
+                <div class="wheel-container">
+                    <div id="pointer">▼</div>
+                    <div id="wheel" class="wheel"></div>
+                </div>
+                <button class="spin-btn" onclick="spinWheel()">🎰 SPIN!</button>
+                <h3 id="result" class="spin-result"></h3>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- CART DRAWER -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-header">
+            <h2>🛒 Your Order</h2>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <ul id="order-list"></ul>
+        <div class="cart-total">
+            <h3>Total: ₱<span id="total">0</span></h3>
+            <button class="checkout-btn" onclick="checkout()">Checkout ✅</button>
+        </div>
+    </div>
+
+    <!-- RECEIPT MODAL -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="receipt-header">
+                <h2>🧾 Receipt</h2>
+                <p>Budget Bites — ABM 12</p>
+            </div>
+            <pre id="receipt"></pre>
+            <div class="receipt-total">
+                <h3>TOTAL: ₱<span id="final-total"></span></h3>
+            </div>
+            <button class="btn-primary" onclick="resetOrder()">New Order 🍱</button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>©2024 Budget Bites — ABM 12 Entrepreneurship Business Proposal</p>
+        <p>"You love your love bites" 🧡</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
