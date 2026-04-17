@@ -1,1524 +1,7 @@
-i need to create an website https://tanpariente.wixsite.com/j-tech-services refer to this site parang ganiyag site ung need ko gawin, for school project lang siya so di ko na siya need ideploy publicly need ko lang siya maaccess then mainteract, SO Im a new programmer lang kaya need ko muna malaman lahat ng need ko para magawa to btw meron na kong visual code
-12:08 AM
-Analyzed website structure at formulated beginner-friendly local development roadmap
-
-Okay, nakita ko na yung reference site! It's a tech services business website with navigation, a hero section, services listing, and contact info. Perfect for a school project! 🎉
-
-Here's everything you need to know bago ka magsimula:
-🧰 Ano ang Kailangan Mo?
-Tools (libre lahat!)
-
-    VS Code ✅ — meron ka na
-    Live Server extension (para makita agad ang changes mo sa browser habang nagco-code ka)
-        Sa VS Code, pindutin ang Ctrl+Shift+X → hanapin "Live Server" → i-install
-
-Yun lang! Dahil school project at hindi mo need i-deploy, HTML, CSS, at JavaScript lang ang gagamitin mo — walang need ng server o hosting.
-📁 Anong Files ang Gagawin Mo?
-
-Ganito ang magiging structure ng iyong project folder:
-
-j-tech-website/
-│
-├── index.html          ← Home page
-├── about.html          ← About page
-├── services.html       ← Services page
-├── contact.html        ← Contact page
-│
-├── style.css           ← Design/styling ng lahat ng pages
-│
-└── images/             ← Folder para sa mga larawan
-    └── logo.png
-
-📄 Anong Laman ng Bawat File?
-File	Ginagawa
-index.html	Home page — hero section, services preview
-about.html	About page — info tungkol sa business
-services.html	Services page — listahan ng services with prices
-contact.html	Contact page — form para mag-message
-style.css	Lahat ng kulay, fonts, layout
-🚀 Paano Simulan?
-
-    Gumawa ng bagong folder kahit saan sa PC mo (e.g. j-tech-website)
-    Buksan yung folder sa VS Code: File → Open Folder
-    Gumawa ng index.html — i-right click sa file explorer ng VS Code → New File
-    Kapag may laman na, i-right click ang index.html → "Open with Live Server"
-    Magbubukas ang browser at makikita mo agad ang website mo! 🎉
-
-📝 Pages ng Reference Site Mo
-
-Based sa site na binigay mo, kailangan mong gawin ang:
-
-    Home — Logo, tagline na "Best Tech, Best Future", at preview ng services
-    About — Tungkol sa J-Tech Services
-    Services — 3 services: Home & Office Computer Services (₱800), Computer Network Installation (₱1,000), Data Files Recovery (₱800)
-    Get a Quote — Simple form
-    Contact — Contact details + map or form
-
-Gusto mo bang magsimula na tayo mag-code? Kaya kong gawin ang buong website para sa iyo — isusulat ko ang lahat ng HTML at CSS na inspired sa reference mo, tapos ipe-present ko sa iyo para ma-open mo na agad sa VS Code! 😊
-
-Sabihin mo lang kung may gusto kang baguhin — pangalan ng business, kulay, services, etc.
-
-nung pag ka open ko ng file lumabas is "Do you want to save your workspace configuration as a file" ano pipindutin dont save, save or cancel
-12:13 AM
-Identified dialog purpose at identified optimal button selection
-
-I-click ang "Don't Save"! 😊
-
-Yung dialog na yan ay tinatanong lang ng VS Code kung gusto mong i-save ang "workspace" as a special file — pero hindi mo yan kailangan para sa simple na HTML project.
-
-Don't Save = bubukas pa rin yung folder mo normally, walang mawawala. ✅
-
-Okay ka na ba? Puwede na tayong magsimulang mag-code ng website! 🚀
-
-gawin mong step by step ung pagturo mo sakin, naka gawa nako ng index.html ano na mga next na ggawin
-12:16 AM
-Orchestrated step-by-step website building guidance starting with HTML basics
-
-Ayos! Let's go step by step! 🚀
-STEP 1: I-setup ang index.html
-
-Buksan ang index.html mo sa VS Code, i-delete lahat ng laman (kung may laman na), tapos i-copy paste ito:
-html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J-Tech Services</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="logo">J-Tech Services</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <h1>J-Tech Services</h1>
-        <p>Best Tech, Best Future</p>
-        <a href="services.html" class="btn">View Our Services</a>
-    </section>
-
-    <!-- SERVICES PREVIEW -->
-    <section class="services-preview">
-        <h2>Our Services</h2>
-        <div class="cards">
-
-            <div class="card">
-                <h3>Home & Office Computer Services</h3>
-                <p>2 hrs &nbsp;|&nbsp; ₱800</p>
-                <a href="services.html" class="btn">Book Now</a>
-            </div>
-
-            <div class="card">
-                <h3>Computer Network Installation</h3>
-                <p>2 hrs &nbsp;|&nbsp; ₱1,000</p>
-                <a href="services.html" class="btn">Book Now</a>
-            </div>
-
-            <div class="card">
-                <h3>Data Files Recovery</h3>
-                <p>2 hrs &nbsp;|&nbsp; ₱800</p>
-                <a href="services.html" class="btn">Book Now</a>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>©2024 J-Tech Services. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
-
-✅ Pagkatapos i-paste:
-
-    I-save → Ctrl + S
-    I-right click ang index.html → Open with Live Server
-    Makikita mo ang website sa browser (walang design pa, puro plain text — normal yan!)
-
-Sabi mo kapag tapos ka na at nakita mo na sa browser → sabihin mo sakin at pupunta tayo sa STEP 2: Paggawa ng style.css para maganda na ang hitsura! 🎨
-
-di ko makita ung open live server
-12:17 AM
-Identified multiple solutions para sa Live Server access
-
-Okay! Subukan mo itong mga paraan: 😊
-Paraan 1: "Go Live" button sa baba
-
-Tingnan mo ang pinaka-ibaba ng VS Code (yung status bar) — may makikita kang "Go Live" na button doon sa kanang bahagi. I-click yan!
-Paraan 2: I-check kung naka-install ba ang Live Server
-
-Baka hindi pa naka-install. Gawin mo ito:
-
-    Pindutin ang Ctrl + Shift + X (magbubukas ang Extensions)
-    I-type sa search bar → "Live Server"
-    Hanapin yung gawa ni Ritwick Dey
-    I-click ang Install
-    Pagkatapos mag-install, tingnan ulit ang baba ng VS Code — lalabas na ang "Go Live" ✅
-
-Paraan 3: Kung ayaw pa rin
-
-    Pindutin ang Ctrl + Shift + P
-    Mag-type ng → Open with Live Server
-    Pindutin ang Enter
-
-Alin sa tatlo ang nahanap mo? 😊
-
-ayaw gumana
-12:19 AM
-Identified technical issue, pivoted toward beginner-friendly solution
-
-Okay no problem! May mas madaling paraan — hindi na kailangan ng Live Server! 😊
-Simpleng Paraan: I-open lang sa Browser
-
-    Hanapin ang iyong index.html file sa File Explorer ng PC mo
-    I-double click ang file
-    Aaberto siya sa browser mo (Chrome, Edge, etc.)
-
-✅ Makikita mo na agad ang website!
-Para ma-refresh ang changes mo:
-
-Kapag nag-edit ka ng code sa VS Code → i-save (Ctrl + S) → pumunta sa browser → pindutin ang F5 o Ctrl + R para mag-refresh
-
-Subukan mo muna ito — mas simple pa nga! Tapos sabihin mo kung nakita mo na ang website sa browser. 😊
-
-okay na nabuksan ko siya
-12:20 AM
-Charted progression to next development phase
-
-Ayos! 🎉 Nakita mo na ang website kahit plain text pa lang — that's totally normal!
-STEP 2: Gumawa ng style.css
-
-Ito na ang magpapaganda ng website mo! 🎨
-
-Sa VS Code:
-
-    I-right click sa file explorer (yung left side panel)
-    Click "New File"
-    I-type → style.css → Enter
-
-Pagkatapos, i-copy paste ito sa loob ng style.css:
-css
-
-/* GENERAL */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    color: #333;
-}
-
-/* NAVIGATION */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1a1a2e;
-    padding: 15px 40px;
-}
-
-nav .logo {
-    color: white;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 15px;
-}
-
-nav ul li a:hover {
-    color: #00d4ff;
-}
-
-/* HERO SECTION */
-.hero {
-    background-color: #16213e;
-    color: white;
-    text-align: center;
-    padding: 100px 20px;
-}
-
-.hero h1 {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.hero p {
-    font-size: 20px;
-    margin-bottom: 30px;
-    color: #00d4ff;
-}
-
-/* BUTTON */
-.btn {
-    background-color: #00d4ff;
-    color: #1a1a2e;
-    padding: 12px 28px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.btn:hover {
-    background-color: #00b8d9;
-}
-
-/* SERVICES PREVIEW */
-.services-preview {
-    padding: 60px 40px;
-    text-align: center;
-    background-color: #f5f5f5;
-}
-
-.services-preview h2 {
-    font-size: 32px;
-    margin-bottom: 40px;
-    color: #1a1a2e;
-}
-
-.cards {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-}
-
-.card {
-    background-color: white;
-    border-radius: 12px;
-    padding: 30px 25px;
-    width: 280px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.card h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-    color: #1a1a2e;
-}
-
-.card p {
-    margin-bottom: 20px;
-    color: #666;
-}
-
-/* FOOTER */
-footer {
-    background-color: #1a1a2e;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-
-✅ Pagkatapos i-paste:
-
-    I-save → Ctrl + S
-    Pumunta sa browser → pindutin ang F5 para mag-refresh
-
-Makikita mo na ngayon ang magandang design! Sabihin mo kung okay na para pumunta tayo sa STEP 3: Paggawa ng About page! 😊
-
-okay na meron na
-12:21 AM
-Charted progression toward next development phase
-
-Ganda! 🎉 Okay, next na!
-STEP 3: Gumawa ng about.html
-
-Sa VS Code:
-
-    I-right click sa file explorer
-    Click "New File"
-    I-type → about.html → Enter
-
-Tapos i-copy paste ito:
-html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About | J-Tech Services</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="logo">J-Tech Services</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- ABOUT HERO -->
-    <section class="page-hero">
-        <h1>About Us</h1>
-        <p>Learn more about J-Tech Services</p>
-    </section>
-
-    <!-- ABOUT CONTENT -->
-    <section class="about-content">
-
-        <div class="about-box">
-            <h2>Who We Are</h2>
-            <p>J-Tech Services is a trusted technology service provider offering reliable and affordable tech solutions for homes and businesses. We are committed to delivering quality service with honesty and professionalism.</p>
-        </div>
-
-        <div class="about-box">
-            <h2>Our Mission</h2>
-            <p>Our mission is to provide the best tech solutions to every client — making technology accessible, simple, and efficient for everyone.</p>
-        </div>
-
-        <div class="about-box">
-            <h2>Why Choose Us?</h2>
-            <ul class="about-list">
-                <li>✅ Experienced and skilled technicians</li>
-                <li>✅ Affordable and transparent pricing</li>
-                <li>✅ Fast and reliable service</li>
-                <li>✅ Available for home and office visits</li>
-            </ul>
-        </div>
-
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>©2024 J-Tech Services. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
-
-Tapos dagdag natin ito sa style.css — i-scroll sa pinaka-baba ng style.css mo tapos i-paste ito sa dulo:
-css
-
-/* PAGE HERO */
-.page-hero {
-    background-color: #16213e;
-    color: white;
-    text-align: center;
-    padding: 60px 20px;
-}
-
-.page-hero h1 {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.page-hero p {
-    font-size: 18px;
-    color: #00d4ff;
-}
-
-/* ABOUT CONTENT */
-.about-content {
-    padding: 60px 40px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.about-box {
-    margin-bottom: 40px;
-}
-
-.about-box h2 {
-    font-size: 26px;
-    color: #1a1a2e;
-    margin-bottom: 12px;
-}
-
-.about-box p {
-    font-size: 16px;
-    line-height: 1.8;
-    color: #555;
-}
-
-.about-list {
-    list-style: none;
-    padding: 0;
-}
-
-.about-list li {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
-}
-
-✅ Steps:
-
-    I-save ang about.html → Ctrl + S
-    I-save ang style.css → Ctrl + S
-    I-double click ang about.html sa file explorer para buksan sa browser
-    Tingnan kung okay ang About page!
-
-Sabihin mo kapag okay na para sa STEP 4: Services page! 😊
-
-oo all goods
-12:23 AM
-
-Let's go! 🔥
-STEP 4: Gumawa ng services.html
-
-Sa VS Code:
-
-    I-right click sa file explorer
-    Click "New File"
-    I-type → services.html → Enter
-
-Tapos i-copy paste ito:
-html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services | J-Tech Services</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="logo">J-Tech Services</div>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- PAGE HERO -->
-    <section class="page-hero">
-        <h1>Our Services</h1>
-        <p>Affordable and reliable tech solutions for you</p>
-    </section>
-
-    <!-- SERVICES LIST -->
-    <section class="services-full">
-
-        <div class="service-item">
-            <div class="service-icon">🖥️</div>
-            <div class="service-info">
-                <h2>Home & Office Computer Services</h2>
-                <p>We provide complete computer repair and maintenance services for both home and office use. From hardware issues to software troubleshooting, we've got you covered.</p>
-                <div class="service-details">
-                    <span>⏱ 2 hours</span>
-                    <span>💰 ₱800</span>
-                </div>
-                <a href="contact.html" class="btn">Book Now</a>
-            </div>
-        </div>
-
-        <div class="service-item">
-            <div class="service-icon">🌐</div>
-            <div class="service-info">
-                <h2>Computer Network Installation</h2>
-                <p>Professional network setup and installation for homes and businesses. We ensure fast, stable, and secure network connections tailored to your needs.</p>
-                <div class="service-details">
-                    <span>⏱ 2 hours</span>
-                    <span>💰 ₱1,000</span>
-                </div>
-                <a href="contact.html" class="btn">Book Now</a>
-            </div>
-        </div>
-
-        <div class="service-item">
-            <div class="service-icon">💾</div>
-            <div class="service-info">
-                <h2>Data Files Recovery</h2>
-                <p>Lost important files? We offer professional data recovery services to help you retrieve deleted, corrupted, or inaccessible files safely and efficiently.</p>
-                <div class="service-details">
-                    <span>⏱ 2 hours</span>
-                    <span>💰 ₱800</span>
-                </div>
-                <a href="contact.html" class="btn">Book Now</a>
-            </div>
-        </div>
-
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>©2024 J-Tech Services. All rights reserved.</p>
-    </footer>
-
-</body>
-</html>
-
-Tapos i-paste ito sa dulo ng style.css:
-css
-
-/* SERVICES FULL PAGE */
-.services-full {
-    padding: 60px 40px;
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.service-item {
-    background-color: white;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    display: flex;
-    gap: 25px;
-    align-items: flex-start;
-}
-
-.service-icon {
-    font-size: 50px;
-}
-
-.service-info h2 {
-    font-size: 22px;
-    color: #1a1a2e;
-    margin-bottom: 10px;
-}
-
-.service-info p {
-    font-size: 15px;
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 15px;
-}
-
-.service-details {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-    font-weight: bold;
-    color: #1a1a2e;
-}
-
-✅ Steps:
-
-    I-save ang services.html → Ctrl + S
-    I-save ang style.css → Ctrl + S
-    I-double click ang services.html para buksan sa browser
-    Tingnan kung okay!
-
-Sabihin mo kapag okay na para sa STEP 5: Contact page — last page na! 😊
-
-ito ung gusto kong maging laman nung website ko https://www.canva.com/design/DAGSOCK9YQk/QxrdsjXCJwsnh7aZLw0Hig/view#1
-12:25 AM
-Recognized Canva link inaccessibility, solicited user description
-
-Ay hindi ko ma-access ang Canva link — naka-block siya. 😅
-
-Puwede mo bang gawin ito para makita ko ang laman:
-
-Option 1: Kumuha ng Screenshot
-
-    Buksan ang Canva design mo
-    Pindutin ang Windows + Shift + S para mag-screenshot
-    I-paste dito sa chat ✅
-
-Option 2: Sabihin mo lang ang laman Tulad ng:
-
-    Ano ang pangalan ng business?
-    Anong services ang naka-lista?
-    May colors ba na gusto mo?
-    Ano ang laman ng bawat page (Home, About, Services, Contact)?
-
-Alin ang mas madali para sa iyo? 😊
-
-yan ang buong product/business info for ur reference so far ito na ung progress ko 
-HTML : 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Budget Bites</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-<header class="navbar">
-<div class="container nav-flex">
-<div class="logo">
-<img src="logo.png">
-<span>BUDGET BITES</span>
-</div>
-<div class="cart" onclick="toggleCart()">
-🛒 <span id="cart-count">0</span>
-</div>
-</div>
-</header>
-<section class="hero">
-<h1>Mix & Match</h1>
-<p>Isang kagat, I miss you agad</p>
-</section>
-<!-- MAIN -->
-<section class="section container">
-<h2>🍱 Main Dish</h2>
-<div class="grid">
-<div class="card main" onclick="selectMain('Shanghai Rice',49,this)">
-<img src="shanghai.jpg">
-<h3>Shanghai Rice</h3>
-<p>₱49</p>
-</div>
-<div class="card main" onclick="selectMain('Sisig Tofu',49,this)">
-<img src="sisig.jpg">
-<h3>Sisig Tofu</h3>
-<p>₱49</p>
-</div>
-</div>
-</section>
-<!-- SIDE -->
-<section id="sides" class="section container hidden">
-<h2>🍟 Pick 1 Side</h2>
-<div class="grid">
-<div class="card side" onclick="addSide('Fries',55,this)">
-<img src="fries.jpg">
-<h3>Fries</h3>
-</div>
-<div class="card side" onclick="addSide('Cheese Sticks',60,this)">
-<img src="cheese.jpg">
-<h3>Cheese Sticks</h3>
-</div>
-</div>
-</section>
-<!-- SNACKS -->
-<section class="section container">
-<h2>🍿 Snacks</h2>
-<div class="grid">
-<div class="card" onclick="addExtra('Choco Mallows',25)">
-<img src="mallow.jpg">
-<h3>Choco Mallows</h3>
-</div>
-<div class="card" onclick="addExtra('Gellidensed',20)">
-<img src="gelli.jpg">
-<h3>Gellidensed</h3>
-</div>
-</div>
-</section>
-<!-- DESSERT -->
-<section class="section container">
-<h2>🍰 Desserts</h2>
-<div class="grid">
-<div class="card" onclick="addExtra('Hotcake',50)">
-<img src="hotcake.jpg">
-<h3>Hotcake</h3>
-</div>
-</div>
-</section>
-<!-- SPIN -->
-<section class="section container">
-<h2>🎡 PICK UP ONE, SEE YOUR DESTINY</h2>
-<p>₱2 per spin</p>
-<div class="wheel-box">
-<div id="wheel" class="wheel"></div>
-<button onclick="spinWheel()">SPIN</button>
-<h3 id="result"></h3>
-</div>
-</section>
-<!-- CART -->
-<div id="cartDrawer" class="cart-drawer">
-<h2>Your Order</h2>
-<ul id="order-list"></ul>
-<h3>Total: ₱<span id="total">0</span></h3>
-<button onclick="checkout()">Checkout</button>
-</div>
-<!-- MODAL -->
-<div id="modal" class="modal">
-<div class="modal-content">
-<h2>Receipt</h2>
-<pre id="receipt"></pre>
-<h3>Total: ₱<span id="final-total"></span></h3>
-<button onclick="resetOrder()">New Order</button>
-</div>
-</div>
-<script src="script.js"></script>
-</body>
-</html>
-
-JS: 
-let selectedMain=null;
-let selectedSide=null;
-let extras=[];
-/* MAIN */
-function selectMain(name,price,el){
-document.querySelectorAll('.main').forEach(c=>c.classList.remove('selected'));
-el.classList.add('selected');
-selectedMain={name,price};
-selectedSide=null;
-document.getElementById("sides").classList.remove("hidden");
-updateCart();
-}
-/* SIDE (1 ONLY) */
-function addSide(name,price,el){
-if(!selectedMain){
-alert("Select main first!");
-return;
-}
-document.querySelectorAll('.side').forEach(c=>c.classList.remove('selected'));
-el.classList.add('selected');
-selectedSide={name,price};
-updateCart();
-}
-/* EXTRA */
-function addExtra(name,price){
-extras.push({name,price});
-updateCart();
-}
-/* CART */
-function updateCart(){
-let list=document.getElementById("order-list");
-list.innerHTML="";
-let total=0;
-if(selectedMain){
-total+=selectedMain.price;
-list.innerHTML+=
-<li class="main-item">
-${selectedMain.name} ₱${selectedMain.price}
-<button onclick="removeMain()">X</button>
-</li>;
-}
-if(selectedSide){
-total+=selectedSide.price;
-list.innerHTML+=
-<li class="side-item">
-${selectedSide.name} ₱${selectedSide.price}
-<button onclick="removeSide()">X</button>
-</li>;
-}
-extras.forEach((e,i)=>{
-total+=e.price;
-list.innerHTML+=
-<li class="extra-item">
-${e.name} ₱${e.price}
-<button onclick="removeExtra(${i})">X</button>
-</li>;
-});
-document.getElementById("cart-count").innerText=
-(selectedMain?1:0)+(selectedSide?1:0)+extras.length;
-document.getElementById("total").innerText=total;
-}
-/* REMOVE */
-function removeMain(){
-selectedMain=null;
-selectedSide=null;
-updateCart();
-}
-function removeSide(){
-selectedSide=null;
-updateCart();
-}
-function removeExtra(i){
-extras.splice(i,1);
-updateCart();
-}
-/* CART */
-function toggleCart(){
-document.getElementById("cartDrawer").classList.toggle("open");
-}
-/* CHECKOUT */
-function checkout(){
-let receipt="";
-let total=0;
-if(selectedMain){
-receipt+=${selectedMain.name} ₱${selectedMain.price}\n;
-total+=selectedMain.price;
-}
-if(selectedSide){
-receipt+=${selectedSide.name} ₱${selectedSide.price}\n;
-total+=selectedSide.price;
-}
-extras.forEach(e=>{
-receipt+=${e.name} ₱${e.price}\n;
-total+=e.price;
-});
-document.getElementById("receipt").innerText=receipt;
-document.getElementById("final-total").innerText=total;
-document.getElementById("modal").style.display="block";
-}
-/* RESET */
-function resetOrder(){
-selectedMain=null;
-selectedSide=null;
-extras=[];
-updateCart();
-document.getElementById("modal").style.display="none";
-}
-/* SPIN FIXED */
-const prizes=[
-"Gummy","Chips","MilkTea","Ballpen","Instax","Donut","Fries","Pancake"
-];
-function spinWheel(){
-let wheel=document.getElementById("wheel");
-let deg=3600 + Math.floor(Math.random()*360);
-wheel.style.transform=rotate(${deg}deg);
-let index=Math.floor(Math.random()*prizes.length);
-setTimeout(()=>{
-document.getElementById("result").innerText=prizes[index];
-},2000);
-}
-
-CSS: 
-body {
-font-family: 'Poppins', sans-serif;
-background: linear-gradient(135deg,#f5e6d3,#fdf6ec);
-margin:0;
-}
-/* CONTAINER */
-.container{
-max-width:1100px;
-margin:auto;
-}
-/* NAV */
-.nav-flex{
-display:flex;
-justify-content:space-between;
-padding:15px;
-}
-.logo img{
-width:35px;
-}
-/* HERO */
-.hero{
-text-align:center;
-padding:60px;
-background:linear-gradient(135deg,#c9a46c,#e8d3b9);
-color:white;
-}
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-}
-/* CARD */
-.card{
-background:white;
-border-radius:20px;
-padding:15px;
-text-align:center;
-transition:.3s;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
-.card img{
-width:100%;
-height:130px;
-object-fit:cover;
-border-radius:15px;
-border:3px solid #f3e2c7;
-}
-.card:hover{
-transform:translateY(-10px) scale(1.05);
-}
-/* SELECTED */
-.selected{
-border:2px solid #c9a46c;
-}
-/* CART */
-.cart-drawer{
-position:fixed;
-right:-320px;
-top:0;
-width:320px;
-height:100%;
-background:#fffaf3;
-padding:20px;
-transition:.3s;
-}
-.cart-drawer.open{
-right:0;
-}
-/* CART STYLE */
-.main-item{
-background:#f3e2c7;
-padding:8px;
-border-radius:10px;
-margin-bottom:5px;
-}
-.side-item{
-background:#eee;
-padding:8px;
-border-radius:10px;
-opacity:.6;
-margin-bottom:5px;
-}
-/* WHEEL */
-.wheel-box{
-text-align:center;
-margin-top:20px;
-}
-.wheel{
-width:150px;
-height:150px;
-border-radius:50%;
-margin:20px auto;
-background:conic-gradient(
-#c9a46c 0deg 40deg,
-#eee 40deg 80deg,
-#c9a46c 80deg 120deg,
-#eee 120deg 160deg,
-#c9a46c 160deg 200deg,
-#eee 200deg 240deg,
-#c9a46c 240deg 280deg,
-#eee 280deg 320deg,
-#c9a46c 320deg 360deg
-);
-transition:transform 2s ease-out;
-}
-button{
-background:#c9a46c;
-color:white;
-border:none;
-padding:10px;
-border-radius:10px;
-cursor:pointer;
-}
-/* HIDDEN */
-.hidden{
-display:none;
-}
-.main-item{
-background:#f3e2c7;
-padding:8px;
-border-radius:10px;
-margin-bottom:5px;
-display:flex;
-justify-content:space-between;
-}
-.side-item{
-background:#eee;
-padding:8px;
-border-radius:10px;
-margin-bottom:5px;
-opacity:.6;
-display:flex;
-justify-content:space-between;
-}
-.extra-item{
-background:#fafafa;
-padding:8px;
-border-radius:10px;
-margin-bottom:5px;
-display:flex;
-justify-content:space-between;
-}
-2:01 PM
-Analyzed Budget Bites progress and identified missing website pages
-
-Grabe! Ang galing mo! 🔥 Hindi ka na pala baguhan — ang ganda ng code mo! Budget Bites pala ang tunay na project, hindi J-Tech! 😄
-
-Nakita ko lahat ng 20 slides. Here's my assessment:
-✅ Meron ka na:
-
-    Interactive ordering system (main + side + extras)
-    Cart drawer
-    Spin wheel game
-    Receipt/checkout modal
-
-❌ Kulang pa based sa Canva:
-
-    Home page — proper hero with Budget Bites branding
-    About page — Mission, Vision, Business Idea, Goals, Target Market
-    Financial Summary — expenses, earned money, profit breakdown
-    Navigation para mag-connect lahat ng pages
-
-📁 Bagong File Structure mo:
-
-budget-bites/
-├── index.html       ← Home (hero + intro)
-├── about.html       ← Mission, Vision, Goals
-├── menu.html        ← Yung current HTML mo (ordering system)
-├── financials.html  ← Expenses at Profit breakdown
-├── style.css        ← Shared CSS
-└── script.js        ← Yung current JS mo
-
-Ang plan: Yung current HTML mo → i-rename as menu.html. Tapos gagawa tayo ng index.html, about.html, at financials.html.
-
-Una, i-rename ang current index.html mo → menu.html:
-
-    Sa VS Code file explorer → right click sa index.html
-    Click Rename
-    I-type → menu.html → Enter ✅
-
-Tapos sabihin mo kapag done para simulan na nating gawin ang Home page! 😊
-
-done
-2:03 PM
-Architected homepage structure with navigation and branding elements
-STEP 5: Gumawa ng bagong index.html (Home Page)
-
-Sa VS Code: Gumawa ng bagong file → i-type index.html → Enter
-
-Tapos i-copy paste ito:
-html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Bites</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="container nav-flex">
-            <div class="logo">
-                <img src="logo.png" alt="logo">
-                <span>BUDGET BITES</span>
-            </div>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="menu.html">Order Now</a>
-                <a href="financials.html">Financials</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="home-hero">
-        <div class="hero-text">
-            <h1>BUDGET BITES</h1>
-            <p class="tagline">"Sa Unang Kagat, I Miss You Ka Agad"</p>
-            <p class="sub">Affordable Mix & Match food for every student of CSN</p>
-            <a href="menu.html" class="hero-btn">Order Now 🍱</a>
-        </div>
-    </section>
-
-    <!-- WHAT WE OFFER -->
-    <section class="home-section container">
-        <h2>What We Offer</h2>
-        <div class="offer-grid">
-            <div class="offer-card">
-                <div class="offer-icon">🍱</div>
-                <h3>Mix & Match Meals</h3>
-                <p>Choose your main dish and pair it with your favorite side — your meal, your way!</p>
-            </div>
-            <div class="offer-card">
-                <div class="offer-icon">🍟</div>
-                <h3>Snacks & Sides</h3>
-                <p>Fries, Cheese Sticks, Choco Mallows, Gellidensed — perfect add-ons for every bite.</p>
-            </div>
-            <div class="offer-card">
-                <div class="offer-icon">🎡</div>
-                <h3>Destiny Game</h3>
-                <p>Feeling lucky? Spin the wheel for only ₱2 and win exciting prizes!</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FEATURED ITEMS -->
-    <section class="home-section featured container">
-        <h2>Our Best Sellers</h2>
-        <div class="best-grid">
-            <div class="best-card">
-                <img src="shanghai.jpg" alt="Shanghai Rice">
-                <div class="best-info">
-                    <h3>Shanghai Rice</h3>
-                    <p>Main Dish</p>
-                    <span>₱49</span>
-                </div>
-            </div>
-            <div class="best-card">
-                <img src="sisig.jpg" alt="Sisig Tofu">
-                <div class="best-info">
-                    <h3>Sisig Tofu</h3>
-                    <p>Main Dish</p>
-                    <span>₱49</span>
-                </div>
-            </div>
-            <div class="best-card">
-                <img src="mallow.jpg" alt="Choco Mallows">
-                <div class="best-info">
-                    <h3>Choco Mallows</h3>
-                    <p>Dessert</p>
-                    <span>₱25</span>
-                </div>
-            </div>
-        </div>
-        <div style="text-align:center; margin-top:30px;">
-            <a href="menu.html" class="hero-btn">See Full Menu</a>
-        </div>
-    </section>
-
-    <!-- TAGLINE BANNER -->
-    <section class="banner">
-        <h2>ITS A MATCH — UNMATCHED IN EVERY BITE 🔥</h2>
-        <p>Business Proposal of ABM 12 | Since 2024</p>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <p>©2024 Budget Bites — ABM 12 Business Proposal</p>
-        <p>"You love your love bites" 🧡</p>
-    </footer>
-
-</body>
-</html>
-
-Tapos i-paste ito sa DULO ng style.css mo:
-css
-
-/* ===== NAVBAR ===== */
-.navbar {
-    background: #2b1a0e;
-    padding: 12px 0;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-}
-.nav-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-}
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #c9a46c;
-    font-size: 20px;
-    font-weight: 700;
-}
-.logo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-.nav-links {
-    display: flex;
-    gap: 25px;
-}
-.nav-links a {
-    color: #f5e6d3;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-.nav-links a:hover {
-    color: #c9a46c;
-}
-
-/* ===== HOME HERO ===== */
-.home-hero {
-    background: linear-gradient(135deg, #2b1a0e, #c9a46c);
-    color: white;
-    text-align: center;
-    padding: 100px 20px;
-}
-.home-hero h1 {
-    font-size: 60px;
-    font-weight: 700;
-    letter-spacing: 5px;
-    margin-bottom: 15px;
-}
-.tagline {
-    font-size: 22px;
-    font-style: italic;
-    margin-bottom: 10px;
-    color: #fdf6ec;
-}
-.sub {
-    font-size: 16px;
-    color: #f5e6d3;
-    margin-bottom: 35px;
-}
-.hero-btn {
-    background: #c9a46c;
-    color: white;
-    padding: 14px 35px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
-    transition: 0.3s;
-}
-.hero-btn:hover {
-    background: #a07840;
-    transform: scale(1.05);
-}
-
-/* ===== HOME SECTIONS ===== */
-.home-section {
-    padding: 60px 20px;
-}
-.home-section h2 {
-    text-align: center;
-    font-size: 32px;
-    color: #2b1a0e;
-    margin-bottom: 40px;
-}
-
-/* OFFER CARDS */
-.offer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-}
-.offer-card {
-    background: white;
-    border-radius: 20px;
-    padding: 30px 20px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: 0.3s;
-}
-.offer-card:hover {
-    transform: translateY(-8px);
-}
-.offer-icon {
-    font-size: 50px;
-    margin-bottom: 15px;
-}
-.offer-card h3 {
-    color: #2b1a0e;
-    margin-bottom: 10px;
-}
-.offer-card p {
-    color: #888;
-    font-size: 14px;
-}
-
-/* BEST SELLERS */
-.featured {
-    background: #fdf6ec;
-}
-.best-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-}
-.best-card {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: 0.3s;
-}
-.best-card:hover {
-    transform: translateY(-8px);
-}
-.best-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-.best-info {
-    padding: 15px;
-    text-align: center;
-}
-.best-info h3 {
-    color: #2b1a0e;
-    margin-bottom: 5px;
-}
-.best-info p {
-    color: #aaa;
-    font-size: 13px;
-}
-.best-info span {
-    font-size: 18px;
-    font-weight: 700;
-    color: #c9a46c;
-}
-
-/* BANNER */
-.banner {
-    background: #2b1a0e;
-    color: #c9a46c;
-    text-align: center;
-    padding: 50px 20px;
-}
-.banner h2 {
-    font-size: 26px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-.banner p {
-    color: #f5e6d3;
-    font-size: 14px;
-}
-
-/* FOOTER */
-.footer {
-    background: #1a0f07;
-    color: #c9a46c;
-    text-align: center;
-    padding: 25px;
-    font-size: 14px;
-    line-height: 2;
-}
-
-✅ Steps:
-
-    I-save ang index.html → Ctrl + S
-    I-save ang style.css → Ctrl + S
-    I-double click ang index.html para buksan sa browser
-    Tingnan kung maganda! 🎉
-
-Sabihin mo kapag okay na para sa STEP 6: About page! 😊
-
-wait naka upload kasi to sa github ko wala bang magiging problema dun
-2:04 PM
-Weighed GitHub storage concerns versus local access needs
-
-Wala! Totally fine yan! 😊 GitHub is actually magaling para sa school projects!
-Ano lang ang mangyayari:
-
-✅ Okay lang:
-
-    Naka-save ang code mo online — parang backup
-    Makikita ng teacher mo ang code kung ibabahagi mo ang link
-    Hindi siya automatically na-deploy as a live website — file storage lang siya
-
-⚠️ Isang bagay lang na dapat malaman:
-
-Yung mga images mo (logo.png, shanghai.jpg, etc.) — kapag ni-upload mo sa GitHub, kailangan mo ring i-upload yung actual image files para gumana sila.
-
-Kung wala kang images pa — normal lang na may broken image icon sa browser mo ngayon. Pwede kang:
-
-    Mag-download ng sample food photos online
-    I-save sa iyong project folder with the same filename (e.g. shanghai.jpg)
-
-Para ma-update ang GitHub mo after mag-code:
-
-Kapag nag-dagdag ka ng bagong files o nag-edit, i-upload mo lang ulit sa GitHub:
-
-    Buksan ang iyong GitHub repo
-    Add file → Upload files
-    I-drag ang lahat ng files mo
-    Click Commit changes ✅
-
-Okay ka na? Tuloy tayo sa STEP 6: About page! 😊
-
-naka live na ko sa github eh
-2:05 PM
-Recognized live deployment and prepared clarifying questions
-
-Oh nice! 🎉 So naka-GitHub Pages ka na pala — ibig sabihin live na ang website mo sa internet!
-Dalawang bagay lang na dapat ayusin:
-1. ⚠️ Images — siguruhing naka-upload sa GitHub
-
-Kapag naka-GitHub Pages, kailangan naka-upload ang lahat ng images sa repo mo para lumabas sila. Kung hindi pa — broken image lang ang lalabas.
-
-Yung mga image filenames na ginagamit mo sa code:
-
-    logo.png
-    shanghai.jpg
-    sisig.jpg
-    fries.jpg
-    cheese.jpg
-    mallow.jpg
-    gelli.jpg
-    hotcake.jpg
-
-Meron ka na bang actual images para sa mga yan? 😊
-2. ⚠️ Kapag nag-dagdag ng bagong files (like about.html, financials.html)
-
-Every time gumawa ka ng bagong file sa VS Code → kailangan mo itong i-upload sa GitHub para ma-update ang live site mo.
-
-Steps para mag-update:
-
-    Buksan ang GitHub repo mo
-    Add file → Upload files
-    I-drag ang bagong files
-    Click Commit changes ✅
-
-Puwede mo bang i-share ang GitHub Pages link mo para makita ko kung okay na ang site? 😊 Tapos tuloy tayo sa About page!
-
-ulit nalang ako gawa ako new repo para dito gawin ko lahat bago pati vs code send mo nalang sakinmga syntax at files na need ko gawin
-2:16 PM
-Thought for 2s
-
-Sige! Fresh start — maganda yan para malinis! 🔥 Gagawin ko na lahat ng files para i-download mo na lang at i-upload sa GitHub!
-Nag-organize ng website files para sa Budget Bites project
-
-Okay! Gagawin ko na lahat ng files ngayon! 🚀
-Created 6 files, ran a command, read a file
-
-Tapos na lahat! 🎉 I-download mo lahat ng 6 files! Here's ang complete na Budget Bites website mo:
-📁 Files na Na-download Mo:
-File	Nilalaman
-index.html	Home page — hero, best sellers, offers
-about.html	Mission, Vision, Business Idea, Goals
-menu.html	Ordering system + Spin Wheel game
-financials.html	Lahat ng expenses, profit breakdown
-style.css	Design ng lahat ng pages
-script.js	Cart, ordering, spin wheel logic
-🚀 Paano i-upload sa GitHub:
-
-    Gumawa ng new repo sa GitHub
-    Click Add file → Upload files
-    I-drag ang lahat ng 6 files + yung mga images mo (logo.png, shanghai.jpg, etc.)
-    Click Commit changes
-    I-enable ang GitHub Pages sa Settings → Pages → Deploy from main branch ✅
-
-⚠️ Reminder sa Images:
-
-Kailangan mong i-upload ang iyong actual food photos with these exact filenames:
-
-    logo.png shanghai.jpg sisig.jpg fries.jpg cheese.jpg mallow.jpg gelli.jpg hotcake.jpg
-
-Sabihin mo kung may tanong ka! 😊
-Index
-Code · HTML 
-About
-Code · HTML 
-Menu
-Code · HTML 
-Financials
-Code · HTML 
-Style
-Code · CSS 
-Script
-JS 
-You are out of free messages until 7:00 PM
-Upgrade
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-Style · CSS
 /* =====================
    BUDGET BITES - CSS
    ===================== */
- 
+
 :root {
     --brown: #2b1a0e;
     --gold: #c9a46c;
@@ -1529,19 +12,19 @@ Style · CSS
     --green: #4caf50;
     --red: #e74c3c;
 }
- 
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
- 
+
 body {
     font-family: 'Poppins', sans-serif;
     background: var(--light);
     color: var(--brown);
 }
- 
+
 /* =====================
    NAVBAR
    ===================== */
@@ -1609,7 +92,7 @@ body {
     background: #a07840;
     color: white;
 }
- 
+
 /* =====================
    CONTAINERS & LAYOUT
    ===================== */
@@ -1633,7 +116,7 @@ body {
 .mt-30 {
     margin-top: 30px;
 }
- 
+
 /* =====================
    HERO (HOME)
    ===================== */
@@ -1684,7 +167,7 @@ body {
     border: 5px solid var(--gold);
     box-shadow: 0 0 40px rgba(201,164,108,0.4);
 }
- 
+
 /* =====================
    BUTTONS
    ===================== */
@@ -1706,7 +189,7 @@ body {
     color: white;
     transform: scale(1.05);
 }
- 
+
 /* =====================
    PAGE HERO
    ===================== */
@@ -1727,7 +210,7 @@ body {
     font-size: 16px;
     color: var(--warm);
 }
- 
+
 /* =====================
    SECTION TITLE
    ===================== */
@@ -1739,7 +222,7 @@ body {
     color: var(--brown);
     margin-bottom: 40px;
 }
- 
+
 /* =====================
    OFFER CARDS (HOME)
    ===================== */
@@ -1774,7 +257,7 @@ body {
     font-size: 14px;
     line-height: 1.6;
 }
- 
+
 /* =====================
    BEST SELLERS (HOME)
    ===================== */
@@ -1816,7 +299,7 @@ body {
     font-weight: 700;
     color: var(--gold);
 }
- 
+
 /* =====================
    BANNER
    ===================== */
@@ -1836,7 +319,7 @@ body {
     color: var(--warm);
     font-size: 14px;
 }
- 
+
 /* =====================
    FOOTER
    ===================== */
@@ -1848,7 +331,7 @@ body {
     font-size: 14px;
     line-height: 2;
 }
- 
+
 /* =====================
    ABOUT PAGE
    ===================== */
@@ -1929,7 +412,7 @@ body {
     letter-spacing: 5px;
     margin: 10px 0;
 }
- 
+
 /* =====================
    MENU PAGE
    ===================== */
@@ -1994,7 +477,7 @@ body {
 .hidden {
     display: none;
 }
- 
+
 /* SPIN WHEEL */
 .spin-section {
     background: var(--white);
@@ -2075,7 +558,7 @@ body {
     font-weight: 700;
     min-height: 40px;
 }
- 
+
 /* CART DRAWER */
 .cart-drawer {
     position: fixed;
@@ -2167,7 +650,7 @@ body {
     background: var(--brown);
     color: var(--gold);
 }
- 
+
 /* MODAL */
 .modal {
     display: none;
@@ -2222,7 +705,7 @@ body {
     font-size: 22px;
     color: var(--brown);
 }
- 
+
 /* =====================
    FINANCIALS PAGE
    ===================== */
@@ -2245,7 +728,7 @@ body {
 .summary-card p { font-size: 13px; opacity: 0.8; margin-bottom: 8px; }
 .summary-card h2 { font-size: 40px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 3px; }
 .summary-card small { font-size: 12px; opacity: 0.7; }
- 
+
 .fin-section { border-radius: 0; }
 .fin-grid {
     display: grid;
@@ -2332,7 +815,7 @@ body {
     color: var(--green) !important;
     font-weight: 700;
 }
- 
+
 .expense-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -2361,7 +844,7 @@ body {
 .total-item span {
     color: var(--gold) !important;
 }
- 
+
 .final-summary { text-align: center; }
 .final-grid {
     display: grid;
@@ -2401,5 +884,3 @@ body {
     letter-spacing: 3px;
     color: var(--gold);
 }
- 
-
