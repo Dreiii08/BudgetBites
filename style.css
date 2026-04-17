@@ -624,3 +624,11 @@ body {
     font-size: 22px;
     color: var(--brown);
 }
+.logo img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 10px rgba(201,164,108,0.4);
+}
