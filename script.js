@@ -1,9 +1,9 @@
 // =====================
-// BUDGET BITES - ENHANCED VERSION
+// BUDGET BITES - FIXED SIDE DISH LOGIC
 // =====================
 
 let mains = {};
-let selectedSides = []; // Array of side dishes (one per main dish quantity)
+let selectedSides = [];
 let extras = [];
 
 // ---------------------
@@ -26,10 +26,8 @@ function changeMainQty(name, price, el, change) {
     let totalMainQty = getTotalMainQty();
     let hasMain = totalMainQty > 0;
 
-    // Show/hide sides section
     document.getElementById("sides").classList.toggle("hidden", !hasMain);
     
-    // Update side hint
     updateSideHint();
     
     // Adjust sides if quantity decreased
@@ -37,7 +35,6 @@ function changeMainQty(name, price, el, change) {
         trimSidesToMatch(totalMainQty);
     }
     
-    // Clear side selection if no mains
     if (totalMainQty === 0) {
         clearAllSides();
     }
@@ -61,7 +58,7 @@ function updateSideHint() {
             sideHint.style.color = "#c9a46c";
             sideHint.style.fontWeight = "500";
         } else if (currentSideCount === totalMain) {
-            sideHint.innerHTML = `✅ All ${totalMain} side dish(es) selected! You can still change them.`;
+            sideHint.innerHTML = `✅ All ${totalMain} side dish(es) selected! Click a side to change it.`;
             sideHint.style.color = "#4caf50";
             sideHint.style.fontWeight = "500";
         }
@@ -72,32 +69,29 @@ function updateSideHint() {
 
 function trimSidesToMatch(maxCount) {
     while (selectedSides.length > maxCount) {
-        selectedSides.pop();
+        let removed = selectedSides.pop();
+        let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
+        if (removedCard) removedCard.classList.remove("selected");
     }
     updateSideSelectionUI();
 }
 
 function clearAllSides() {
+    selectedSides.forEach(side => {
+        let card = document.querySelector(`.side[data-side-name="${side.name}"]`);
+        if (card) card.classList.remove("selected");
+    });
     selectedSides = [];
     updateSideSelectionUI();
 }
 
 function updateSideSelectionUI() {
-    // Remove selected class from all side cards
-    document.querySelectorAll(".side").forEach(c => c.classList.remove("selected"));
-    
-    // Add selected class to currently selected sides
-    selectedSides.forEach(side => {
-        let sideCard = document.querySelector(`.side[data-side-name="${side.name}"]`);
-        if (sideCard) sideCard.classList.add("selected");
-    });
-    
     updateSideHint();
     updateCart();
 }
 
 // ---------------------
-// SIDE DISH (One per main quantity - ADD ONLY, NO TOGGLE)
+// SIDE DISH - Fixed: Can select up to main quantity, can change selection
 // ---------------------
 function addSide(name, price, el) {
     let totalMainQty = getTotalMainQty();
@@ -110,9 +104,13 @@ function addSide(name, price, el) {
     // Check if this side is already selected
     let existingIndex = selectedSides.findIndex(s => s.name === name);
     
-    // If already selected, show message and don't add again
+    // If already selected, remove it (unselect)
     if (existingIndex !== -1) {
-        alert(`⚠️ "${name}" is already in your sides! You can only select each side once.`);
+        selectedSides.splice(existingIndex, 1);
+        el.classList.remove("selected");
+        updateSideHint();
+        updateCart();
+        animateCart();
         return;
     }
     
@@ -120,11 +118,26 @@ function addSide(name, price, el) {
     if (selectedSides.length < totalMainQty) {
         selectedSides.push({ name, price });
         el.classList.add("selected");
-        animateCart(); // Add cart animation
+        animateCart();
         updateSideHint();
         updateCart();
     } else {
-        alert(`⚠️ You already selected ${selectedSides.length} side dish(es). You can only have ${totalMainQty} side(s) total (one per main dish).`);
+        // If at limit, ask user to replace a side
+        let replaceChoice = confirm(`You already have ${selectedSides.length} side(s). Replace the last side with "${name}"?`);
+        
+        if (replaceChoice) {
+            // Remove the last selected side
+            let removed = selectedSides.pop();
+            let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
+            if (removedCard) removedCard.classList.remove("selected");
+            
+            // Add the new side
+            selectedSides.push({ name, price });
+            el.classList.add("selected");
+            updateSideHint();
+            updateCart();
+            animateCart();
+        }
     }
 }
 
@@ -134,11 +147,7 @@ function addSide(name, price, el) {
 function addExtra(name, price) {
     extras.push({ name, price });
     updateCart();
-    
-    // Add animation feedback
-    let btn = event.currentTarget;
-    btn.style.transform = "scale(0.95)";
-    setTimeout(() => { btn.style.transform = "scale(1)"; }, 150);
+    animateCart();
 }
 
 // ---------------------
@@ -161,30 +170,22 @@ function updateCart() {
             count += m.qty;
 
             list.innerHTML += `
-                <li class="cart-item main-item">
-                    <div class="cart-item-info">
-                        <span class="cart-item-name">🍱 ${m.name}</span>
-                        <span class="cart-item-qty">x${m.qty}</span>
-                    </div>
-                    <div class="cart-item-price">₱${sub}</div>
-                    <button class="remove-btn" onclick="removeMain('${m.name}')">✕</button>
+                <li class="main-item">
+                    🍱 ${m.name} x${m.qty} — ₱${sub}
+                    <button onclick="removeMain('${m.name}')">✕</button>
                 </li>
             `;
         }
     }
 
-    // Side dishes (show each individually)
+    // Side dishes
     selectedSides.forEach((side, idx) => {
         total += side.price;
         count++;
         list.innerHTML += `
-            <li class="cart-item side-item">
-                <div class="cart-item-info">
-                    <span class="cart-item-name">🍟 ${side.name}</span>
-                    <span class="cart-item-label">Side #${idx + 1}</span>
-                </div>
-                <div class="cart-item-price">₱${side.price}</div>
-                <button class="remove-btn" onclick="removeSideItem(${idx})">✕</button>
+            <li class="side-item">
+                🍟 ${side.name} (Side #${idx + 1}) — ₱${side.price}
+                <button onclick="removeSideItem(${idx})">✕</button>
             </li>
         `;
     });
@@ -194,18 +195,15 @@ function updateCart() {
         total += e.price;
         count++;
         list.innerHTML += `
-            <li class="cart-item extra-item">
-                <div class="cart-item-info">
-                    <span class="cart-item-name">✨ ${e.name}</span>
-                </div>
-                <div class="cart-item-price">₱${e.price}</div>
-                <button class="remove-btn" onclick="removeExtra(${i})">✕</button>
+            <li class="extra-item">
+                ✨ ${e.name} — ₱${e.price}
+                <button onclick="removeExtra(${i})">✕</button>
             </li>
         `;
     });
     
     if (list.innerHTML === "") {
-        list.innerHTML = '<div class="empty-cart">🛒 Your cart is empty<br><span>Add some delicious items!</span></div>';
+        list.innerHTML = '<div style="text-align:center; padding:40px; color:#aaa;">🛒 Your cart is empty</div>';
     }
 
     document.getElementById("cart-count").innerText = count;
@@ -234,8 +232,11 @@ function removeMain(name) {
 }
 
 function removeSideItem(index) {
+    let removed = selectedSides[index];
+    let removedCard = document.querySelector(`.side[data-side-name="${removed.name}"]`);
+    if (removedCard) removedCard.classList.remove("selected");
     selectedSides.splice(index, 1);
-    updateSideSelectionUI();
+    updateSideHint();
     updateCart();
 }
 
@@ -252,6 +253,19 @@ function toggleCart() {
 }
 
 // ---------------------
+// ANIMATION
+// ---------------------
+function animateCart() {
+    let cartIcon = document.querySelector('.cart-icon');
+    if (cartIcon) {
+        cartIcon.classList.add('cart-bump');
+        setTimeout(() => {
+            cartIcon.classList.remove('cart-bump');
+        }, 300);
+    }
+}
+
+// ---------------------
 // CHECKOUT
 // ---------------------
 function checkout() {
@@ -260,7 +274,7 @@ function checkout() {
     let hasItems = false;
     
     receipt += "═".repeat(30) + "\n";
-    receipt += "   BUDGET BITES - RECEIPT\n";
+    receipt += "   BUDGET BITES\n";
     receipt += "═".repeat(30) + "\n\n";
 
     for (let k in mains) {
@@ -269,38 +283,35 @@ function checkout() {
             hasItems = true;
             let sub = m.qty * m.price;
             total += sub;
-            receipt += `🍱 ${m.name}\n   x${m.qty} @ ₱${m.price} = ₱${sub}\n\n`;
+            receipt += `🍱 ${m.name} x${m.qty} = ₱${sub}\n`;
         }
     }
 
     if (selectedSides.length > 0) {
-        receipt += `🍟 SIDE DISHES (${selectedSides.length} pcs):\n`;
+        receipt += `\n🍟 SIDES:\n`;
         selectedSides.forEach((side, idx) => {
             total += side.price;
             receipt += `   ${idx + 1}. ${side.name} = ₱${side.price}\n`;
         });
-        receipt += "\n";
     }
 
     if (extras.length > 0) {
-        receipt += `✨ ADD-ONS:\n`;
+        receipt += `\n✨ ADD-ONS:\n`;
         extras.forEach(e => {
             total += e.price;
             receipt += `   • ${e.name} = ₱${e.price}\n`;
         });
-        receipt += "\n";
     }
 
     if (!hasItems && selectedSides.length === 0 && extras.length === 0) {
-        alert("🛒 Your cart is empty! Add some items first.");
+        alert("🛒 Empty cart!");
         return;
     }
 
-    receipt += "─".repeat(30) + "\n";
-    receipt += `💰 TOTAL AMOUNT: ₱${total}\n`;
+    receipt += "\n" + "─".repeat(30) + "\n";
+    receipt += `💰 TOTAL: ₱${total}\n`;
     receipt += "═".repeat(30) + "\n";
-    receipt += "Thank you for ordering!\n";
-    receipt += "Budget Bites ♡";
+    receipt += "Thank you! ♡";
 
     document.getElementById("receipt").innerText = receipt;
     document.getElementById("final-total").innerText = total;
@@ -333,7 +344,7 @@ window.onclick = function(event) {
     }
 }
 
-// Add data attributes to side cards for easier selection
+// Add data attributes to side cards on load
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll(".side").forEach(card => {
         let name = card.querySelector("h3")?.innerText;
@@ -342,53 +353,3 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-// Add cart animation when adding items
-function animateCart() {
-    let cartIcon = document.querySelector('.cart-icon');
-    cartIcon.classList.add('cart-bump');
-    setTimeout(() => {
-        cartIcon.classList.remove('cart-bump');
-    }, 300);
-}
-
-// Modify your addExtra function to include animation
-// Replace your existing addExtra function with this:
-function addExtra(name, price) {
-    extras.push({ name, price });
-    updateCart();
-    animateCart(); // Add this line
-}
-
-// Modify addSide function to include animation  
-// Replace your existing addSide function with this:
-function addSide(name, price, el) {
-    let totalMainQty = getTotalMainQty();
-    
-    if (totalMainQty === 0) {
-        alert("📢 Please select a main dish first!");
-        return;
-    }
-    
-    let existingIndex = selectedSides.findIndex(s => s.name === name);
-    
-    if (existingIndex !== -1) {
-        selectedSides.splice(existingIndex, 1);
-        el.classList.remove("selected");
-    } else {
-        if (selectedSides.length < totalMainQty) {
-            selectedSides.push({ name, price });
-            el.classList.add("selected");
-            animateCart(); // Add this line
-        } else {
-            alert(`⚠️ You can only choose ${totalMainQty} side dish(es) (one per main dish).`);
-            return;
-        }
-    }
-    
-    updateSideHint();
-    updateCart();
-}
-
-// Modify changeMainQty to add animation when increasing quantity
-// Add this inside changeMainQty function after increasing quantity:
-// if (change > 0) animateCart();
