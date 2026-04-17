@@ -105,17 +105,45 @@ body {
    HERO (HOME)
    ===================== */
 .hero {
-    background: linear-gradient(135deg, var(--brown) 50%, #4a2c14 100%);
+    background: var(--light);
+    padding: 80px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hero-content {
+    max-width: 600px;
+}
+.hero-content {
+    max-width: 900px;
+    background: linear-gradient(135deg, var(--brown), #4a2c14);
     color: white;
-    padding: 80px 40px;
+    padding: 50px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 40px;
-    min-height: 480px;
 }
-.hero-content {
-    max-width: 600px;
+.hero-label {
+    color: var(--gold);
+}
+
+.hero-tagline {
+    font-style: italic;
+    color: var(--warm);
+}
+
+.hero-sub {
+    color: #ddd;
+}
+.hero-badge img {
+    width: 200px;
+    height: 200px;
+    border-radius: 15px; /* box style instead of circle */
+    object-fit: cover;
+    border: 3px solid var(--gold);
 }
 .hero-label {
     font-size: 12px;
