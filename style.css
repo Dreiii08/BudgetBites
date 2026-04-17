@@ -40,8 +40,9 @@ body {
     max-width: 1100px;
     margin: auto;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    gap: 20px;
     padding: 0 20px;
     flex-wrap: nowrap;
 }
@@ -49,6 +50,12 @@ body {
     display: flex;
     gap: 25px;
     flex-shrink: 0;
+}
+@media (max-width: 768px) {
+    .nav-inner {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
 }
 .nav-links a {
     color: var(--warm);
@@ -113,9 +120,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-.hero-content {
-    max-width: 600px;
-}
+
 .hero-content {
     max-width: 900px;
     background: linear-gradient(135deg, var(--brown), #4a2c14);
@@ -650,4 +655,21 @@ body {
     height: 45px;
     object-fit: cover;
     border-radius: 50%;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    flex: 1;
+    justify-content: center;
+}
+
+.cart-icon {
+    flex: 0 0 auto;
 }
