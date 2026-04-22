@@ -378,7 +378,7 @@ function checkout() {
     receipt += `💰 TOTAL AMOUNT: ₱${total}\n`;
     receipt += "─".repeat(40) + "\n\n";
     receipt += "🙏 Salamat sa iyong order!\n";
-    receipt += "🏫 CSN - Budget Bites\n";
+    receipt += "🏫 Budget Bites\n";
     receipt += "⭐ Rate us 5 stars! ⭐\n";
     
     document.getElementById("receipt").innerText = receipt;
